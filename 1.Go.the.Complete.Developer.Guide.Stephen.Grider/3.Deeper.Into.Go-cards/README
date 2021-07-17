@@ -13,3 +13,9 @@ Cards
     saveToFile  -> Save a list of cards to a file on the local machine 
 
     newDeckFromFile -> Load a list of cards from the local machine
+
+
+Run
+------------
+
+        go run main.go
