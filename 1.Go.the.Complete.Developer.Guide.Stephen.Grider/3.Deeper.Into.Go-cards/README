@@ -19,3 +19,12 @@ Run
 ------------
 
         go run main.go
+
+
+
+
+Notes
+-------------
+    Array   -> Fised length list of things
+
+    Slice   -> An array that can grow or shrink
