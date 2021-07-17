@@ -1,0 +1,57 @@
+How to execute ?
+--------------------- 
+    go run main.go
+
+
+
+GO CLI
+--------------
+    go build 
+
+        Compiles a bunch of go source code files
+
+    go run
+
+        Compiles and executes one or two files
+        
+    go fmt
+
+        Format all the code in each file in the current directory
+
+    go install 
+
+        Compiles and install a package
+
+    go get 
+
+        Downloads the raw source code of someone else's package
+
+    go test 
+
+        Runs any tests associated with the current project
+
+
+Notes
+-------------
+    
+    Package == Project == Workspace
+
+    Types of Package
+    --------------------
+
+        Executable
+            Generates a file that we can run
+            (when we use package main)
+            it should always have a function called main
+
+        Reusable
+            Code used as ´helpers´. Good place to put reusable logic  
+            (any other name that is not main)
+
+
+import 
+-------------
+
+    import "fmt"
+        short of format, it is used for printing
+
