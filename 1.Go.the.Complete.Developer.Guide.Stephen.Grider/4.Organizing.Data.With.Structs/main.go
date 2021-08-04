@@ -34,13 +34,16 @@ func main() {
 		},
 	}
 
-	jim.updateName("Jimmy")
+	//&variable = give me the memory address of the value this variable is pointing at
+	jimPointer := &jim
+	jimPointer.updateName("Jimmy")
 	jim.print()
 }
 
 //receiver
-func (p person) updateName(newFirstName string) {
-	p.firstName = newFirstName
+//*pointer = give me the value this memory address is pointing at
+func (pointerToPerson *person) updateName(newFirstName string) {
+	(*pointerToPerson).firstName = newFirstName
 }
 
 //receiver
