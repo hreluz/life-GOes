@@ -1,0 +1,39 @@
+
+How do we run the code in our project?
+go run main.go
+
+GO CLI
+	go run => Compile a bunch of go source code files
+
+	go build => Compiles a bunch of go source code files to a file
+
+	go fmt => Formats all the code in each file in the current directory
+
+	go install => Compiles and "installs" a package
+
+	go get => Downloads the raw source code of someone else's package
+
+	go test => Runs any test associated with the current project
+
+What does 'package main' mean?
+
+	Types of Package
+
+	Executable - Generates a file that we can run
+			   - When it has main.go it is an executable project	
+			   - Defines a func main
+
+	Reusable - Code used as 'helpers'. Good place to put reusable logic
+
+What does 'import fmt' mean?
+	- Gives my package main, all the funcionality in fmt
+	- fmt is a short of format, it is used to print
+
+What's that 'func' thing?
+	- func -> it is short for function
+	- main -> name of the funcion
+
+How is the main.go file organized?
+	- package main  -> package declaration
+	- import "fmt" -> import other packages that we need
+	- func main -> declare functions, tell Go to do things
