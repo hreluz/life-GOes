@@ -3,7 +3,7 @@ How do we run the code in our project?
 go run main.go
 
 GO CLI
-	go run => Compile a bunch of go source code files
+	go run => Compile a bunch of go source code files, to run
 
 	go build => Compiles a bunch of go source code files to a file
 
@@ -16,6 +16,8 @@ GO CLI
 	go test => Runs any test associated with the current project
 
 What does 'package main' mean?
+
+	package = project = workspace
 
 	Types of Package
 
