@@ -1,6 +1,6 @@
 package main
 
-import "fmt"
+// import "fmt"
 
 //Array is a fixed number
 //Slice is an array without length
@@ -17,5 +17,5 @@ func main() {
 	// fmt.Println([]byte(greeting))
 
 	cards := newDeck()
-	fmt.Println(cards.toString())
+	cards.saveToFile("my_cards")
 }
