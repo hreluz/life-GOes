@@ -10,7 +10,7 @@ type contactInfo struct {
 type person struct {
 	firstName string
 	lastName  string
-	contact   contactInfo
+	contactInfo
 }
 
 func main() {
@@ -28,14 +28,24 @@ func main() {
 	jim := person{
 		firstName: "Jim",
 		lastName:  "Party",
-		contact: contactInfo{
+		contactInfo: contactInfo{
 			email:   "jim@party.com",
 			zipCode: 9400,
 		},
 	}
 
-	fmt.Printf("%+v", jim)
+	jim.print()
+	jim.updateName("Hector")
+	jim.print()
+}
 
+func (p person) updateName(newFirstNaame string) {
+	p.firstName = newFirstNaame
+}
+
+//receiver
+func (p person) print() {
+	fmt.Printf("%+v", p)
 }
 
 // When no assigning values there are zero values
