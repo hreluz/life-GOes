@@ -35,12 +35,13 @@ func main() {
 	}
 
 	jim.print()
-	jim.updateName("Hector")
+	jimPointer := &jim
+	jimPointer.updateName("Hector")
 	jim.print()
 }
 
-func (p person) updateName(newFirstNaame string) {
-	p.firstName = newFirstNaame
+func (pointerToPerson *person) updateName(newFirstNaame string) {
+	(*pointerToPerson).firstName = newFirstNaame
 }
 
 //receiver
