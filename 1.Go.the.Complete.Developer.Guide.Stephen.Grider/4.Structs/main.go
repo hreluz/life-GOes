@@ -51,19 +51,7 @@ func (pointerToPerson *person) updateName(newFirstNaame string) {
 	// *pointerToPerson - This is an operator - it means we want to manipulate the value the pointer is referencing
 }
 
-// Pointers
-// 0001 (address) =  person {fistName: "Jim"} (value)
-// Turn address into a value with  *address
-// Turn value into address with &value
-
 //receiver
 func (p person) print() {
 	fmt.Printf("%+v", p)
 }
-
-// When no assigning values there are zero values
-// TYPE 	ZERO VALUE
-// STRING 	""
-// INT 	0
-// FLOAT	0
-// BOOL 	FALSE

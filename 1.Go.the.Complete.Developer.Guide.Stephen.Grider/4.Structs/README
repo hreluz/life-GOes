@@ -1,0 +1,16 @@
+Pointers
+----------
+0001 (address) =  person {fistName: "Jim"} (value)
+    Turn address into a value with  *address
+    Turn value into address with &value
+
+
+
+When no assigning values there are zero values
+--------------------
+TYPE 	ZERO VALUE
+STRING 	""
+INT 	0
+FLOAT	0
+BOOL 	FALSE
+
