@@ -19,4 +19,10 @@ func main() {
 
 	var newNumber float64 = float64(luckyNumber) / 3
 	fmt.Println(newNumber)
+
+	var defaultFloat float64 = 1.23456789123456789
+	var smallFloat float32 = 1.23456789123456789
+
+	fmt.Println(defaultFloat)
+	fmt.Println(smallFloat)
 }
