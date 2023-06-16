@@ -33,5 +33,11 @@ func main() {
 	var firstByte byte = 'a' // same as rune, but only for smaller
 	fmt.Println(firstByte)
 
+	firstName := "Hector"
+	lastName := "Lavoe"
+
+	fmt.Println(firstName + " " + lastName)
+	fmt.Println("9" + "1")
+
 	fmt.Println("end")
 }
