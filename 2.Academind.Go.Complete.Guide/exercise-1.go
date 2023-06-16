@@ -24,13 +24,7 @@ func main() {
 
 }
 
-// 5) Calculate the difference ("age") between the two years and
-//   store it in a new variable. Output that result in the command line.
+// := -> declare and define the variable in one step
+// only var -> declares the variable
 
-// 6) Overwrite the value stored in the "current year" variable with
-//   the previous value + 1 (i.e. next year). Calculate the next year,
-//   don't just change the number.
-//   Repeat step 5) with that new value (without changing any of the previous code).
-
-// Try all those steps on your own first, then have a look at my solution
-// lecture to compare your solution to mine!
+// For int values, the default value is 0, for float it's 0.0 and for string values (text), it's an empty string("")

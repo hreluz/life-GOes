@@ -25,4 +25,13 @@ func main() {
 
 	fmt.Println(defaultFloat)
 	fmt.Println(smallFloat)
+
+	var firstRune rune = 'a' //it is an integer, it converts as ASCII
+	fmt.Println(firstRune)
+	fmt.Println(string(firstRune))
+
+	var firstByte byte = 'a' // same as rune, but only for smaller
+	fmt.Println(firstByte)
+
+	fmt.Println("end")
 }
