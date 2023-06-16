@@ -39,5 +39,13 @@ func main() {
 	fmt.Println(firstName + " " + lastName)
 	fmt.Println("9" + "1")
 
+	multipleLines := `This is 
+	a text with
+	many lines
+	
+	and more lines.`
+
+	fmt.Println(multipleLines)
+
 	fmt.Println("end")
 }
