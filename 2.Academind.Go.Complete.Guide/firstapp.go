@@ -35,8 +35,9 @@ func main() {
 
 	firstName := "Hector"
 	lastName := "Lavoe"
+	fullName := fmt.Sprintln(firstName + " " + lastName)
+	newFullName := fmt.Sprintf("%v %v", firstName, lastName)
 
-	fmt.Println(firstName + " " + lastName)
 	fmt.Println("9" + "1")
 
 	multipleLines := `This is 
@@ -46,6 +47,12 @@ func main() {
 	and more lines.`
 
 	fmt.Println(multipleLines)
+
+	age := 30
+
+	fmt.Printf("Hi, my full name is %v and I am %v (Type: %T) years old.\n", fullName, age, age)
+
+	fmt.Printf("%v\n", newFullName)
 
 	fmt.Println("end")
 }
