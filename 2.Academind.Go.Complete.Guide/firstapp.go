@@ -1,6 +1,10 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/hreluz/lifegoes/greeting"
+)
 
 func main() {
 	// var greetingText string
@@ -8,12 +12,10 @@ func main() {
 
 	// var greetingText string = "Hello World"
 
-	greetingText := "Hello World"
 	luckyNumber := 17
 	evenMoreLuckyNumber := luckyNumber + 5
 
-	fmt.Println(greetingText)
-	fmt.Println(greetingText)
+	fmt.Println(greeting.GreetingText)
 	fmt.Println(luckyNumber)
 	fmt.Println(evenMoreLuckyNumber)
 
