@@ -9,14 +9,17 @@ func main() {
 	printNumber(add(generateRandomNumbers()))
 }
 
-func add(num1 int, num2 int) int {
-	return num1 + num2
+func add(num1 int, num2 int) (sum int) {
+	sum = num1 + num2
+	return
 }
 
 func printNumber(number int) {
 	fmt.Printf("The number is %v", number)
 }
 
-func generateRandomNumbers() (int, int) {
-	return rand.Intn(10), rand.Intn(10)
+func generateRandomNumbers() (r1 int, r2 int) {
+	r1 = rand.Intn(10)
+	r2 = rand.Intn(10)
+	return
 }
