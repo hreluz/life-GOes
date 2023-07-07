@@ -1,9 +1,12 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"math/rand"
+)
 
 func main() {
-	printNumber(add(5, 6))
+	printNumber(add(generateRandomNumbers()))
 }
 
 func add(num1 int, num2 int) int {
@@ -12,4 +15,8 @@ func add(num1 int, num2 int) int {
 
 func printNumber(number int) {
 	fmt.Printf("The number is %v", number)
+}
+
+func generateRandomNumbers() (int, int) {
+	return rand.Intn(10), rand.Intn(10)
 }
