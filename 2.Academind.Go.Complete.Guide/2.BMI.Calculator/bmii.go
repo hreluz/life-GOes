@@ -1,31 +1,21 @@
 package main
 
 import (
-	"fmt"
-	"strconv"
-	"strings"
-
 	"github.com/hreluz/bmi/info"
 )
 
 func main() {
-	fmt.Println(info.MainTitle)
-	fmt.Println(info.Separator)
 
-	fmt.Print(info.WeightPrompt)
-	weightInput, _ := reader.ReadString('\n')
+	info.PrintWelcome()
 
-	fmt.Print(info.HeightPrompt)
-	heightInput, _ := reader.ReadString('\n')
+	weight, height := getUserMetrics()
 
-	weightInput = strings.Replace(weightInput, "\n", "", -1)
-	heightInput = strings.Replace(heightInput, "\n", "", -1)
+	bmi := calculateBMI(weight, height)
 
-	weight, _ := strconv.ParseFloat(weightInput, 64)
-	height, _ := strconv.ParseFloat(heightInput, 64)
+	printBMI(bmi)
 
-	bmi := weight / (height * height)
+}
 
-	fmt.Printf("Your bmi is %.2f", bmi)
-
+func calculateBMI(weight float64, height float64) float64 {
+	return weight / (height * height)
 }
