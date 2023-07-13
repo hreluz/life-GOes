@@ -16,7 +16,7 @@ type User struct {
 	createdDate time.Time
 }
 
-func NewUser(fName string, lName string, bDate string) User {
+func NewUser(fName string, lName string, bDate string) *User {
 	created := time.Now()
 
 	user := User{
@@ -26,7 +26,7 @@ func NewUser(fName string, lName string, bDate string) User {
 		createdDate: created,
 	}
 
-	return user
+	return &user
 }
 
 var reader = bufio.NewReader(os.Stdin)
@@ -49,7 +49,7 @@ func main() {
 	// newUser = User{}
 	// newUser = User{firstName, lastName, birthdate, created}
 
-	newUser = NewUser(firstName, lastName, birthdate)
+	newUser = *NewUser(firstName, lastName, birthdate)
 
 	fmt.Println(newUser)
 }
