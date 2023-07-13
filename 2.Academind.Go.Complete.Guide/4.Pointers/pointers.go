@@ -37,5 +37,8 @@ func main() {
 func double(number *int) int {
 	// accessing to the int value
 	result := *number * 2
+
+	// updates to 100 myAge address
+	// *number = 100
 	return result
 }
