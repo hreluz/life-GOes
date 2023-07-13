@@ -16,6 +16,10 @@ type User struct {
 	createdDate time.Time
 }
 
+func (user *User) outputDetails() {
+	fmt.Printf("My name is %v %v (born on %v)", user.firstName, user.lastName, user.birthdate)
+}
+
 func NewUser(fName string, lName string, bDate string) *User {
 	created := time.Now()
 
@@ -53,11 +57,8 @@ func main() {
 
 	fmt.Println(newUser)
 
-	outputUserDetails(newUser)
-}
-
-func outputUserDetails(user *User) {
-	fmt.Printf("My name is %v %v (born on %v)", user.firstName, user.lastName, user.birthdate)
+	// outputUserDetails(newUser)
+	newUser.outputDetails()
 }
 
 func getUserData(promptText string) string {
