@@ -32,7 +32,7 @@ func NewUser(fName string, lName string, bDate string) *User {
 var reader = bufio.NewReader(os.Stdin)
 
 func main() {
-	var newUser User
+	var newUser *User
 
 	firstName := getUserData("Please enter your first name: ")
 	lastName := getUserData("Please enter your last name: ")
@@ -49,9 +49,15 @@ func main() {
 	// newUser = User{}
 	// newUser = User{firstName, lastName, birthdate, created}
 
-	newUser = *NewUser(firstName, lastName, birthdate)
+	newUser = NewUser(firstName, lastName, birthdate)
 
 	fmt.Println(newUser)
+
+	outputUserDetails(newUser)
+}
+
+func outputUserDetails(user *User) {
+	fmt.Printf("My name is %v %v (born on %v)", user.firstName, user.lastName, user.birthdate)
 }
 
 func getUserData(promptText string) string {
