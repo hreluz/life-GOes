@@ -15,6 +15,21 @@ type Product struct {
 	price       float64
 }
 
+func (product *Product) store() {
+	file, _ := os.Create(product.id + ".txt")
+
+	content := fmt.Sprintf(
+		"ID: %v\nTitle: %v\nDescription: %v\nPrice: %.2f",
+		product.id,
+		product.title,
+		product.description,
+		product.price,
+	)
+	file.WriteString(content)
+
+	file.Close()
+}
+
 func (product *Product) printData() {
 	fmt.Printf("ID: %v\n", product.id)
 	fmt.Printf("Title: %v\n", product.title)
@@ -47,6 +62,8 @@ func main() {
 	firstProduct.printData()
 	secondProduct.printData()
 	thirdProduct.printData()
+
+	thirdProduct.store()
 }
 
 func readUserInput(reader *bufio.Reader, prompText string) string {
