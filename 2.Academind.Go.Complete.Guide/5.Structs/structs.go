@@ -16,6 +16,19 @@ type User struct {
 	createdDate time.Time
 }
 
+func NewUser(fName string, lName string, bDate string) User {
+	created := time.Now()
+
+	user := User{
+		firstName:   fName,
+		lastName:    lName,
+		birthdate:   bDate,
+		createdDate: created,
+	}
+
+	return user
+}
+
 var reader = bufio.NewReader(os.Stdin)
 
 func main() {
@@ -24,7 +37,7 @@ func main() {
 	firstName := getUserData("Please enter your first name: ")
 	lastName := getUserData("Please enter your last name: ")
 	birthdate := getUserData("Please enter your birthdate (MM/DD/YYYY): ")
-	created := time.Now()
+	// created := time.Now()
 
 	// newUser = User{
 	// 	firstName:   firstName,
@@ -34,7 +47,9 @@ func main() {
 	// }
 
 	// newUser = User{}
-	newUser = User{firstName, lastName, birthdate, created}
+	// newUser = User{firstName, lastName, birthdate, created}
+
+	newUser = NewUser(firstName, lastName, birthdate)
 
 	fmt.Println(newUser)
 }
