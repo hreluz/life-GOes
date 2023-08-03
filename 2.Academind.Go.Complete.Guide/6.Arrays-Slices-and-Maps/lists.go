@@ -22,6 +22,7 @@ func main() {
 
 	// first value is
 	featurePrices := prices[1:3]
+	featurePrices[0] = 199.99
 	fmt.Println(featurePrices)
 
 	featurePrices2 := prices[:4]
@@ -30,4 +31,10 @@ func main() {
 	highlightedPrices := featurePrices2[:2]
 	fmt.Println(highlightedPrices)
 
+	fmt.Println(prices)
+	fmt.Println(len(featurePrices), cap(featurePrices))
+
+	fmt.Println(highlightedPrices, len(highlightedPrices), cap(highlightedPrices))
+	highlightedPrices = highlightedPrices[:3]
+	fmt.Println(highlightedPrices, len(highlightedPrices), cap(highlightedPrices))
 }
