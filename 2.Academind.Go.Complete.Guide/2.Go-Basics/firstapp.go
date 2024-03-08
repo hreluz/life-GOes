@@ -29,4 +29,16 @@ func main() {
 
 	var firstByte byte = 'a' //only numbers and letters
 	fmt.Println(firstByte)
+
+	firstName := "James"
+	lastName := "Bond"
+	longText := `
+		this 
+		is 
+		a long
+		text
+	`
+	fmt.Println(firstName + " " + lastName)
+	fmt.Println("9" + "1")
+	fmt.Println(longText)
 }
