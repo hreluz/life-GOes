@@ -21,4 +21,12 @@ func main() {
 
 	var newNumber float64 = float64(luckyNUmber) / 3
 	fmt.Println(newNumber)
+
+	// it has to be single quotes
+	var firstRune rune = '€'
+	fmt.Println(firstRune)         //8364
+	fmt.Println(string(firstRune)) // EURO SIGN
+
+	var firstByte byte = 'a' //only numbers and letters
+	fmt.Println(firstByte)
 }
