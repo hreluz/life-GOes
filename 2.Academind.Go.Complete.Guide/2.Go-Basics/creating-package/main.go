@@ -1,13 +1,17 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+
+	"hlavoe.com/myorganization/firstapp/greeting"
+)
 
 func main() {
-	greetingText := "Hello there"
 	luckyNUmber := 17
 	evenMoreLuckyNumber := luckyNUmber + 5
+	evenMoreLuckyNumber +=1
 
-	fmt.Println(greetingText)
+	fmt.Println(greeting.GreetingText)
 	fmt.Println(luckyNUmber)
 
 	evenMoreLuckyNumber = 99
