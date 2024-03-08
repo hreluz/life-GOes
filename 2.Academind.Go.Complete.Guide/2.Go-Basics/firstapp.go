@@ -41,4 +41,9 @@ func main() {
 	fmt.Println(firstName + " " + lastName)
 	fmt.Println("9" + "1")
 	fmt.Println(longText)
+
+	// fullName := fmt.Sprintln(firstName, " ", lastName)
+	fullName := fmt.Sprintf("%v %v", firstName, lastName)
+	age := 32
+	fmt.Printf("Hi, I am %v and I am %v (Type: %T) years old ", fullName, age, age)
 }
