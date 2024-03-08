@@ -1,0 +1,13 @@
+
+modules > packages ( are bigger )
+
+modules
+- a module has a unique identifier and can be distributed
+- every go project goes into a new module
+- projects can use multiple modules
+
+packages
+- every module contains at least one package (main package)
+- multiple files can make up the same packages (via package instruction)
+- a module may contain multiple packages, stored in subfolder
+- can be imported
