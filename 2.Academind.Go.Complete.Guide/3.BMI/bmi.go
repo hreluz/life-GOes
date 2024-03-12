@@ -1,27 +1,20 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
+	// found in mod when creating with go mod init
+	"github.com/hreluz/bmi/info"
 )
 
-var reader = bufio.NewReader(os.Stdin)
-
-const mainTitle = "BMI Calculator"
-const separator = "-----------------------------"
-const weightPrompt = "Please enter your weight (kg): "
-const heightInput = "Please enter your height (m): "
-
 func main() {
-	fmt.Println(mainTitle)
-	fmt.Println(separator)
-	fmt.Print(weightPrompt)
+	fmt.Println(info.MainTitle)
+	fmt.Println(info.Separator)
+	fmt.Print(info.WeightPrompt)
 	weightInput, _ := reader.ReadString('\n')
 
-	fmt.Print(heightInput)
+	fmt.Print(info.HeightInput)
 	heightInput, _ := reader.ReadString('\n') //this add a \n at the end
 
 	fmt.Print(weightInput)
