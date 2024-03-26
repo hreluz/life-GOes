@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	// found in mod when creating with go mod init
 	"github.com/hreluz/bmi/info"
 )
@@ -11,14 +10,11 @@ func main() {
 
 	weight, height := getUserMetrics()
 
-	// Save that user input in variables and remove the \n
+	bmi := calculateBMI(weight, height)
 
-	// fmt.Print(weight)
-	// fmt.Print(height)
+	printBMI(bmi)
+}
 
-	// Calculate the BMI (weight/ (height*height))
-	bmi := weight / (height * height)
-
-	// Output the calculated BMI
-	fmt.Printf("Your BMI is : %.2f", bmi)
+func calculateBMI(weight float64, height float64) float64 {
+	return weight / (height * height)
 }
