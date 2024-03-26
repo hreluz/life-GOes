@@ -9,8 +9,7 @@ import (
 )
 
 func main() {
-	fmt.Println(info.MainTitle)
-	fmt.Println(info.Separator)
+	info.PrintWelcome()
 	fmt.Print(info.WeightPrompt)
 	weightInput, _ := reader.ReadString('\n')
 
