@@ -40,14 +40,15 @@ func main() {
 
 	// with * in this case, we dereference the pointer to get the value
 	newUser = *NewUser(firstName, lastName, birthdate)
-	// fmt.Println(newUser.firstName, lastName, birthdate, created)
 	fmt.Println(newUser)
-	outputUserDetails(&newUser)
+	newUser.outputUserDetails()
 }
 
-func outputUserDetails(user *User) {
+// when printing is better because the variable is no needed to be store
+func (user *User) outputUserDetails() {
 	// go automatically transform this pointer to be accessible when using structs
-	fmt.Printf("My name is %v %v (born on %v)", (*user).firstName, user.lastName, user.birthDate)
+	// fmt.Printf("My name is %v %v (born on %v)", (*user).firstName, user.lastName, user.birthDate)
+	fmt.Printf("My name is %v %v (born on %v)", user.firstName, user.lastName, user.birthDate)
 }
 
 func getUserData(promptText string) string {
