@@ -16,7 +16,7 @@ type User struct {
 	createdDate time.Time
 }
 
-func NewUser(fName string, lName string, bDate string) User {
+func NewUser(fName string, lName string, bDate string) *User {
 	created := time.Now()
 	user := User{
 		firstName:   fName,
@@ -25,7 +25,7 @@ func NewUser(fName string, lName string, bDate string) User {
 		createdDate: created,
 	}
 
-	return user
+	return &user
 }
 
 var reader = bufio.NewReader(os.Stdin)
@@ -38,7 +38,8 @@ func main() {
 	lastName := getUserData("Please enter your last name: ")
 	birthdate := getUserData("Please enter your birthdate (MM/DD/YYYY): ")
 
-	newUser = NewUser(firstName, lastName, birthdate)
+	// with * in this case, we dereference the pointer to get the value
+	newUser = *NewUser(firstName, lastName, birthdate)
 	// fmt.Println(newUser.firstName, lastName, birthdate, created)
 	fmt.Println(newUser)
 }
