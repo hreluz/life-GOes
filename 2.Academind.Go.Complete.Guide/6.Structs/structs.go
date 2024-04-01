@@ -42,6 +42,12 @@ func main() {
 	newUser = *NewUser(firstName, lastName, birthdate)
 	// fmt.Println(newUser.firstName, lastName, birthdate, created)
 	fmt.Println(newUser)
+	outputUserDetails(&newUser)
+}
+
+func outputUserDetails(user *User) {
+	// go automatically transform this pointer to be accessible when using structs
+	fmt.Printf("My name is %v %v (born on %v)", (*user).firstName, user.lastName, user.birthDate)
 }
 
 func getUserData(promptText string) string {
