@@ -13,6 +13,12 @@ func main() {
 	prices = prices[1:]
 	fmt.Println(updatedPrices)
 	fmt.Println(prices)
+
+	prices2 := []float64{10.99, 9.33, 405.22, 23}
+	discountPrices := []float64{2, 3, 5, 6}
+	prices2 = append(prices2, discountPrices...)
+	fmt.Println(prices2)
+
 }
 
 // func main() {
