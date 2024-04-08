@@ -1,8 +1,6 @@
 package main
 
 import (
-	"fmt"
-
 	"github.com/hreluz/monster-slayer-game/actions"
 	"github.com/hreluz/monster-slayer-game/interaction"
 )
@@ -15,10 +13,10 @@ func main() {
 	winner := ""
 
 	for winner == "" {
-		executeRound()
+		winner = executeRound()
 	}
 
-	endGame()
+	endGame(winner)
 }
 
 func startGame() {
@@ -54,5 +52,6 @@ func executeRound() string {
 	return ""
 }
 
-func endGame() {
+func endGame(winner string) {
+	interaction.DeclareWinner(winner)
 }
