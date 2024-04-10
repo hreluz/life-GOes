@@ -13,3 +13,8 @@ Create a module
 Load third party modules
 ==============================
     go mod tidy
+
+
+Create executable
+======================
+    go build

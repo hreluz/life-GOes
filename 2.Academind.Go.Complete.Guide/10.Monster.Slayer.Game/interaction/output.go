@@ -2,8 +2,10 @@ package interaction
 
 import (
 	"fmt"
-	"github.com/common-nighthawk/go-figure"
 	"os"
+	"path/filepath"
+
+	"github.com/common-nighthawk/go-figure"
 )
 
 type RoundData struct {
@@ -56,7 +58,21 @@ func DeclareWinner(winner string) {
 }
 
 func WriteLogFile(rounds *[]RoundData) {
-	file, err := os.Create("gamelog.txt")
+
+	// go build
+	expPath, err := os.Executable()
+
+	if err != nil {
+		fmt.Println("Writing log file failed. Exiting!")
+		return
+	}
+
+	expPath = filepath.Dir(expPath)
+
+	file, err := os.Create(expPath + "/gamelog.txt")
+
+	// go run
+	// file, err := os.Create("gamelog.txt")
 
 	if err != nil {
 		fmt.Println("Saving a log file failed. Exiting.")
