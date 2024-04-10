@@ -8,3 +8,8 @@ Create a module
 
     Run
         go run .
+
+
+Load third party modules
+==============================
+    go mod tidy
