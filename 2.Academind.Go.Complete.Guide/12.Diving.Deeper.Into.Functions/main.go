@@ -2,19 +2,31 @@ package main
 
 import "fmt"
 
-type transfromFunc func(int) int
+type transformFunc func(int) int
 
 func main() {
 	numbers := []int{1, 2, 3, 4}
+
+	moreNumbers := []int{5, 1, 2}
 
 	dNumbers := transformNumbers(&numbers, double)
 	fmt.Println(dNumbers)
 
 	tNumbers := transformNumbers(&numbers, triple)
 	fmt.Println(tNumbers)
+
+	transformerFn1 := getTransformerFunction(&numbers)
+	transformerFn2 := getTransformerFunction(&moreNumbers)
+
+	transformedNumbers := transformNumbers(&numbers, transformerFn1)
+	moreTransformedNumbers := transformNumbers(&moreNumbers, transformerFn2)
+
+	fmt.Println(transformedNumbers)
+	fmt.Println(moreTransformedNumbers)
+
 }
 
-func transformNumbers(numbers *[]int, transform transfromFunc) []int {
+func transformNumbers(numbers *[]int, transform transformFunc) []int {
 	dNumbers := []int{}
 
 	for _, val := range *numbers {
@@ -22,6 +34,16 @@ func transformNumbers(numbers *[]int, transform transfromFunc) []int {
 	}
 
 	return dNumbers
+}
+
+// func(int) int
+func getTransformerFunction(numbers *[]int) transformFunc {
+
+	if (*numbers)[0] == 1 {
+		return double
+	}
+
+	return triple
 }
 
 func double(number int) int {
