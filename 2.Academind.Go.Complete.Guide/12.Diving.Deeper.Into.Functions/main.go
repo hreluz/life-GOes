@@ -6,27 +6,20 @@ import (
 
 func main() {
 
-	fact := factorial(5)
-	fmt.Println(fact)
+	// numbers := []int{1, 10, 25}
 
-	factWithRecursion := factorialWithRecursion(10)
-	fmt.Println(factWithRecursion)
+	sum := sumup(1, 10, 25)
+
+	fmt.Println(sum)
 
 }
 
-func factorialWithRecursion(number int) int {
-	if number == 1 {
-		return 1
-	}
-	return number * factorial(number-1)
-}
+func sumup(startingValue int, numbers ...int) int {
+	sum := 0
 
-func factorial(number int) int {
-	result := 1
-
-	for i := 1; i <= number; i++ {
-		result = result * i
+	for _, val := range numbers {
+		sum += val
 	}
 
-	return result
+	return startingValue + sum
 }
