@@ -32,6 +32,22 @@ func main() {
 	})
 
 	fmt.Println(transformedAnonymousNumbers)
+
+	// closures
+	double := createTransformer(2)
+	triple := createTransformer(3)
+
+	doubled := transformNumbers(&numbers, double)
+	tripled := transformNumbers(&numbers, triple)
+
+	fmt.Println(doubled)
+	fmt.Println(tripled)
+}
+
+func createTransformer(factor int) func(int) int {
+	return func(number int) int {
+		return number * factor
+	}
 }
 
 func tranformWithAnonymousValues(numbers *[]int, transform func(int) int) []int {
