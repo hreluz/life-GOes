@@ -6,11 +6,14 @@ import (
 
 func main() {
 
-	// numbers := []int{1, 10, 25}
+	numbers := []int{1, 10, 25, 100}
 
 	sum := sumup(1, 10, 25)
 
 	fmt.Println(sum)
+
+	anotherSum := sumup(1, numbers...)
+	fmt.Println(anotherSum)
 
 }
 
