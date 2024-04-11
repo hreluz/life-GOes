@@ -1,28 +1,51 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 )
 
 func main() {
+	userInput := getUserInput()
 
-	numbers := []int{1, 10, 25, 100}
-
-	sum := sumup(1, 10, 25)
-
-	fmt.Println(sum)
-
-	anotherSum := sumup(1, numbers...)
-	fmt.Println(anotherSum)
-
+	storeData(userInput)
 }
 
-func sumup(startingValue int, numbers ...int) int {
-	sum := 0
+func getUserInput() string {
+	fmt.Println("Please enter the text that should be stored.")
+	fmt.Print("Your input: ")
 
-	for _, val := range numbers {
-		sum += val
+	reader := bufio.NewReader(os.Stdin)
+
+	enteredText, err := reader.ReadString('\n')
+
+	if err != nil {
+		fmt.Println("Failed to read user input")
+		return ""
 	}
 
-	return startingValue + sum
+	return enteredText
+}
+
+func storeData(data string) {
+	file, err := os.Create("data.txt")
+
+	if err != nil {
+		fmt.Println("Creating the file failed!")
+		return
+	}
+
+	// it defers the execution of this line, until everythings is executed on this function
+	defer func() {
+		err := file.Close()
+
+		if err != nil {
+			fmt.Println("Closing the file failed!")
+		}
+	}()
+
+	file.WriteString(data)
+
+	fmt.Println("Successfully stored data in file!")
 }
