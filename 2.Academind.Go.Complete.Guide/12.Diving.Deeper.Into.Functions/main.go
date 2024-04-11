@@ -4,86 +4,29 @@ import (
 	"fmt"
 )
 
-type transformFunc func(int) int
-
 func main() {
-	numbers := []int{1, 2, 3, 4}
 
-	moreNumbers := []int{5, 1, 2}
+	fact := factorial(5)
+	fmt.Println(fact)
 
-	dNumbers := transformNumbers(&numbers, double)
-	fmt.Println(dNumbers)
+	factWithRecursion := factorialWithRecursion(10)
+	fmt.Println(factWithRecursion)
 
-	tNumbers := transformNumbers(&numbers, triple)
-	fmt.Println(tNumbers)
-
-	transformerFn1 := getTransformerFunction(&numbers)
-	transformerFn2 := getTransformerFunction(&moreNumbers)
-
-	transformedNumbers := transformNumbers(&numbers, transformerFn1)
-	moreTransformedNumbers := transformNumbers(&moreNumbers, transformerFn2)
-
-	fmt.Println(transformedNumbers)
-	fmt.Println(moreTransformedNumbers)
-
-	// anonymous function
-	transformedAnonymousNumbers := tranformWithAnonymousValues(&numbers, func(number int) int {
-		return number * 2
-	})
-
-	fmt.Println(transformedAnonymousNumbers)
-
-	// closures
-	double := createTransformer(2)
-	triple := createTransformer(3)
-
-	doubled := transformNumbers(&numbers, double)
-	tripled := transformNumbers(&numbers, triple)
-
-	fmt.Println(doubled)
-	fmt.Println(tripled)
 }
 
-func createTransformer(factor int) func(int) int {
-	return func(number int) int {
-		return number * factor
+func factorialWithRecursion(number int) int {
+	if number == 1 {
+		return 1
 	}
+	return number * factorial(number-1)
 }
 
-func tranformWithAnonymousValues(numbers *[]int, transform func(int) int) []int {
-	dNumbers := []int{}
+func factorial(number int) int {
+	result := 1
 
-	for _, val := range *numbers {
-		dNumbers = append(dNumbers, transform(val))
+	for i := 1; i <= number; i++ {
+		result = result * i
 	}
 
-	return dNumbers
-}
-
-func transformNumbers(numbers *[]int, transform transformFunc) []int {
-	dNumbers := []int{}
-
-	for _, val := range *numbers {
-		dNumbers = append(dNumbers, transform(val))
-	}
-
-	return dNumbers
-}
-
-// func(int) int
-func getTransformerFunction(numbers *[]int) transformFunc {
-
-	if (*numbers)[0] == 1 {
-		return double
-	}
-
-	return triple
-}
-
-func double(number int) int {
-	return number * 2
-}
-
-func triple(number int) int {
-	return number * 3
+	return result
 }
