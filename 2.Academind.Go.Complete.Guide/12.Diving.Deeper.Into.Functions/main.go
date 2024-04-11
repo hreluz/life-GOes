@@ -29,11 +29,13 @@ func getUserInput() string {
 }
 
 func storeData(data string) {
-	file, err := os.Create("data.txt")
+	// forcing error to a directory that does not exist
+	file, err := os.Create("d/data.txt")
 
 	if err != nil {
 		fmt.Println("Creating the file failed!")
-		return
+		// generates an error to crash the program
+		panic(err)
 	}
 
 	// it defers the execution of this line, until everythings is executed on this function
