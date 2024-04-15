@@ -23,6 +23,20 @@ type userInputData struct {
 	input string
 }
 
+type user struct {
+	firstName string
+	lastName  string
+	*userInputData
+}
+
+func newUser(first string, last string) *user {
+	return &user{
+		firstName:     first,
+		lastName:      last,
+		userInputData: &userInputData{},
+	}
+}
+
 func newUserInputData() *userInputData {
 	return &userInputData{}
 }
@@ -61,6 +75,12 @@ func main() {
 	data.Store("user1.txt")
 
 	handleUserInput(data)
+
+	batman := newUser("Bruce", "Wayne")
+	batman.PromptForInput()
+	batman.Store("batman.txt")
+	fmt.Println(batman)
+
 }
 
 func handleUserInput(container PrompterStore) {
