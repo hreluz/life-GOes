@@ -29,18 +29,29 @@ func storeData(storableText string, fileName string) {
 	}
 }
 
-func storeMoreData(lines int, fileName string) {
+func storeMoreData(lines int, fileName string, c chan int) {
 	for i := 0; i < lines; i++ {
 		text := fmt.Sprintf("Line %v - Dummy Data\n", i)
 		storeData(text, fileName)
 	}
 
 	fmt.Printf("-- Done storing %v lines of text --\n", lines)
+	c <- 1
 }
 
 func main() {
 	greet()
 	storeData("This is some dummy data!", "dummy-data.txt")
-	storeMoreData(50000, "50000_1.txt")
-	storeMoreData(50000, "50000_2.txt")
+
+	channel := make(chan int)
+
+	go storeMoreData(50000, "50000_1.txt", channel)
+	go storeMoreData(50000, "50000_2.txt", channel)
+
+	fmt.Println("Program ends")
+
+	<-channel
+	<-channel
+
+	fmt.Println("Go routine ends")
 }
