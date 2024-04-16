@@ -45,4 +45,21 @@ func main() {
 	}
 
 	fmt.Println(sum)
+
+	x := make(chan int)
+	y := make(chan int)
+	limiter2 := make(chan int, 3)
+
+	go generateValue(x, limiter2)
+	go generateValue(y, limiter2)
+
+	var a int
+	var b int
+
+	select {
+	case a = <-x:
+		fmt.Printf("X finished first, value is %v ", a)
+	case b = <-y:
+		fmt.Printf("Y finished first, value is %v ", b)
+	}
 }
