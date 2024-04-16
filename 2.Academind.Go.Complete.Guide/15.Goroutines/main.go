@@ -23,10 +23,21 @@ func main() {
 	// running both generated numbers at the same time, rather than wait until the next one
 	go generateValue(c)
 	go generateValue(c)
+	go generateValue(c)
+	go generateValue(c)
+	go generateValue(c)
 
-	x := <-c
-	y := <-c
+	sum := 0
+	i := 0
 
-	sum := x + y
+	for num := range c {
+		sum += num
+		i++
+
+		if i == 4 {
+			close(c)
+		}
+	}
+
 	fmt.Println(sum)
 }
