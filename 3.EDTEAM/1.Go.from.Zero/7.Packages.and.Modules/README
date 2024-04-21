@@ -1,0 +1,32 @@
+List dependencies
+========================
+
+    go list -m all
+
+
+Check why a package was imported
+=================================   
+
+    go mod why rsc.io/sampler
+
+
+Check package's versions
+=============================
+
+    go list -m -versions rsc.io/sampler
+    go list -m -versions rsc.io/quote
+
+Install a package
+=============================
+
+    go get golang.org/x/text   
+
+Install a specific package version
+=============================
+
+    go get rsc.io/sampler@v1.3.1 
+
+Clean dependencies 
+=============================
+
+    go mod tidy
