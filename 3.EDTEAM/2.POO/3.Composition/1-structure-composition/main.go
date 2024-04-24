@@ -10,11 +10,11 @@ import (
 
 func main() {
 	c := customer.New("Batman", "123 Arkham", "555555")
-	items := []invoiceitem.Item{
+	items := invoiceitem.NewItems(
 		invoiceitem.New(1, "Go Course", 12.99),
 		invoiceitem.New(2, "POO Go", 15.11),
 		invoiceitem.New(3, "Testing with Go", 19.22),
-	}
+	)
 
 	i := invoice.New(
 		"Peru",
