@@ -12,8 +12,21 @@ import (
 
 func main() {
 	storage.NewPostgresDB()
-	migrate()
+	// migrate()
+	// createProduct()
+	storageProduct := storage.NewPsqlProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
 
+	ms, err := serviceProduct.GetAll()
+
+	if err != nil {
+		log.Fatalf("product.GetAll: %v", err)
+	}
+
+	fmt.Println(ms)
+}
+
+func createProduct() {
 	storageProduct := storage.NewPsqlProduct(storage.Pool())
 	serviceProduct := product.NewService(storageProduct)
 
