@@ -42,3 +42,14 @@ func NewPostgresDB() {
 func Pool() *sql.DB {
 	return db
 }
+
+// if it is not empty, it will set valid as true, and it will not set a null value in the db
+func stringToNull(s string) sql.NullString {
+	null := sql.NullString{String: s}
+
+	if null.String != "" {
+		null.Valid = true
+	}
+
+	return null
+}

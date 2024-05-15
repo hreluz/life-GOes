@@ -3,6 +3,8 @@ package storage
 import (
 	"database/sql"
 	"fmt"
+
+	"github.com/hreluz/go-db/pkg/product"
 )
 
 const (
@@ -15,6 +17,8 @@ const (
 		updated_at TIMESTAMP,
 		CONSTRAINT products_id_pk PRIMARY KEY(id)
 	)`
+
+	psqlCreateProduct = `INSERT INTO products(name, observations, price, created_at) VALUES ($1, $2, $3, $4) RETURNING id`
 )
 
 type PsqlProduct struct {
@@ -43,5 +47,27 @@ func (p *PsqlProduct) Migrate() error {
 	}
 
 	fmt.Println("Migration Product executed correctly")
+	return nil
+
+}
+
+// Create implement the interface product.Storage
+func (p *PsqlProduct) Create(m *product.Model) error {
+	stmt, err := p.db.Prepare(psqlCreateProduct)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	stmt.QueryRow(
+		m.Name,
+		stringToNull(m.Observations),
+		m.Price,
+		m.CreatedAt,
+	).Scan(&m.ID)
+
+	fmt.Println("Product created correctly")
 	return nil
 }

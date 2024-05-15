@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/hreluz/go-db/pkg/invoiceheader"
@@ -11,6 +12,25 @@ import (
 
 func main() {
 	storage.NewPostgresDB()
+	migrate()
+
+	storageProduct := storage.NewPsqlProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	m := &product.Model{
+		Name:         "Go Course",
+		Price:        50,
+		Observations: "almost done",
+	}
+
+	if err := serviceProduct.Create(m); err != nil {
+		log.Fatalf("product.Create: %v", err)
+	}
+
+	fmt.Printf("%v", m)
+}
+
+func migrate() {
 
 	storageProduct := storage.NewPsqlProduct(storage.Pool())
 	serviceProduct := product.NewService(storageProduct)
