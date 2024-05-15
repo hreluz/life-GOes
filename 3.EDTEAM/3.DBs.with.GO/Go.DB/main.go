@@ -1,6 +1,8 @@
 package main
 
 import (
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -14,6 +16,23 @@ func main() {
 	storage.NewPostgresDB()
 	// migrate()
 	// createProduct()
+	// getProducts()
+
+	storageProduct := storage.NewPsqlProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	ms, err := serviceProduct.GetByID(1)
+	switch {
+	case errors.Is(err, sql.ErrNoRows):
+		fmt.Println("There is no product with this id ")
+	case err != nil:
+		log.Fatalf("product.GetById: %v", err)
+	default:
+		fmt.Println(ms)
+	}
+}
+
+func getProducts() {
 	storageProduct := storage.NewPsqlProduct(storage.Pool())
 	serviceProduct := product.NewService(storageProduct)
 

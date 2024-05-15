@@ -33,7 +33,7 @@ func NewPostgresDB() {
 			log.Fatalf("can't do ping: %v", err)
 		}
 
-		fmt.Print("Connected to postgres")
+		fmt.Print("Connected to postgres\n")
 
 	})
 }
