@@ -17,7 +17,29 @@ func main() {
 	// migrate()
 	// createProduct()
 	// getProducts()
+	// getProductById()
 
+	storageProduct := storage.NewPsqlProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	m := &product.Model{
+		ID:           222,
+		Name:         "Currency Go",
+		Observations: "This is the go course",
+		Price:        33,
+	}
+
+	err := serviceProduct.Update(m)
+
+	if err != nil {
+		log.Fatalf("Product updated: %v", err)
+
+	}
+
+	getProducts()
+}
+
+func getProductById() {
 	storageProduct := storage.NewPsqlProduct(storage.Pool())
 	serviceProduct := product.NewService(storageProduct)
 
