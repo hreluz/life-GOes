@@ -26,6 +26,7 @@ const (
 	psqlGetAllProduct  = `SELECT id, name, observations, price, created_at, updated_at FROM products`
 	psqlGetProductById = psqlGetAllProduct + " WHERE id = $1"
 	psqlUpdateProduct  = `UPDATE products SET name = $1, observations = $2, price = $3, updated_at = $4 WHERE id = $5`
+	psqlDeleteProduct  = `DELETE FROM products WHERE id = $1`
 )
 
 type PsqlProduct struct {
@@ -182,6 +183,26 @@ func (p *PsqlProduct) Update(m *product.Model) error {
 	}
 
 	fmt.Println("Product was updated correctly")
+
+	return nil
+}
+
+func (p *PsqlProduct) Delete(id uint) error {
+	stmt, err := p.db.Prepare(psqlDeleteProduct)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Product was deleted correctly")
 
 	return nil
 }

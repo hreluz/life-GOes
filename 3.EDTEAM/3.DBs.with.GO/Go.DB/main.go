@@ -18,7 +18,23 @@ func main() {
 	// createProduct()
 	// getProducts()
 	// getProductById()
+	// updateProduct()
+	deleteProduct()
+}
 
+func deleteProduct() {
+	storageProduct := storage.NewPsqlProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	err := serviceProduct.Delete(4)
+	if err != nil {
+		log.Fatalf("product.Delete: %v", err)
+	}
+
+	getProducts()
+}
+
+func updateProduct() {
 	storageProduct := storage.NewPsqlProduct(storage.Pool())
 	serviceProduct := product.NewService(storageProduct)
 
