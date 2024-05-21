@@ -3,7 +3,7 @@ package main
 import (
 	// "database/sql"
 	// "errors"
-	// "fmt"
+	"fmt"
 	"log"
 
 	// "github.com/hreluz/go-db/pkg/invoice"
@@ -21,6 +21,24 @@ func main() {
 func mysqlDB() {
 	storage.NewMySQLDB()
 	migrateMysql()
+	createProductMysql()
+}
+
+func createProductMysql() {
+	storageProduct := storage.NewMySQLProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	m := &product.Model{
+		Name:         "Go Course",
+		Price:        50,
+		Observations: "almost done",
+	}
+
+	if err := serviceProduct.Create(m); err != nil {
+		log.Fatalf("product.Create: %v", err)
+	}
+
+	fmt.Printf("%v", m)
 }
 
 func migrateMysql() {
