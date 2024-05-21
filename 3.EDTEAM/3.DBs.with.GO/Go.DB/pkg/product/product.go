@@ -42,11 +42,11 @@ func (m Models) String() string {
 
 type Storage interface {
 	Migrate() error
-	Create(*Model) error
-	Update(*Model) error
-	GetAll() (Models, error)
-	GetByID(uint) (*Model, error)
-	Delete(uint) error
+	// Create(*Model) error
+	// Update(*Model) error
+	// GetAll() (Models, error)
+	// GetByID(uint) (*Model, error)
+	// Delete(uint) error
 }
 
 // Service of product
@@ -64,32 +64,32 @@ func (s *Service) Migrate() error {
 	return s.storage.Migrate()
 }
 
-func (s *Service) Create(m *Model) error {
-	m.CreatedAt = time.Now()
-	return s.storage.Create(m)
-}
+// func (s *Service) Create(m *Model) error {
+// 	m.CreatedAt = time.Now()
+// 	return s.storage.Create(m)
+// }
 
-// GetAll is used for get all the products
-func (s *Service) GetAll() (Models, error) {
-	return s.storage.GetAll()
-}
+// // GetAll is used for get all the products
+// func (s *Service) GetAll() (Models, error) {
+// 	return s.storage.GetAll()
+// }
 
-// GetAll is used for get a product
-func (s *Service) GetByID(id uint) (*Model, error) {
-	return s.storage.GetByID(id)
-}
+// // GetAll is used for get a product
+// func (s *Service) GetByID(id uint) (*Model, error) {
+// 	return s.storage.GetByID(id)
+// }
 
-// Update is used for update a product
-func (s *Service) Update(m *Model) error {
-	if m.ID == 0 {
-		return ErrIDNotFound
-	}
+// // Update is used for update a product
+// func (s *Service) Update(m *Model) error {
+// 	if m.ID == 0 {
+// 		return ErrIDNotFound
+// 	}
 
-	m.UpdatedAt = time.Now()
+// 	m.UpdatedAt = time.Now()
 
-	return s.storage.Update(m)
-}
+// 	return s.storage.Update(m)
+// }
 
-func (s *Service) Delete(id uint) error {
-	return s.storage.Delete(id)
-}
+// func (s *Service) Delete(id uint) error {
+// 	return s.storage.Delete(id)
+// }

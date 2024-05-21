@@ -1,7 +1,7 @@
 package invoiceitem
 
 import (
-	"database/sql"
+	// "database/sql"
 	"time"
 )
 
@@ -19,7 +19,7 @@ type Models []*Model
 
 type Storage interface {
 	Migrate() error
-	CreateTX(*sql.Tx, uint, Models) error
+	// CreateTX(*sql.Tx, uint, Models) error
 }
 
 // Service of invoiceitem

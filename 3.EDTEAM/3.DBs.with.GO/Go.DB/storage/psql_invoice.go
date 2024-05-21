@@ -33,17 +33,17 @@ func (p *PsqlInvoice) Create(m *invoice.Model) error {
 		return err
 	}
 
-	if err := p.storageHeader.CreateTx(tx, m.Header); err != nil {
-		tx.Rollback()
-		return err
-	}
+	// if err := p.storageHeader.CreateTx(tx, m.Header); err != nil {
+	// 	tx.Rollback()
+	// 	return err
+	// }
 
-	fmt.Printf("Invoice created with id: %d \n", m.Header.ID)
+	// fmt.Printf("Invoice created with id: %d \n", m.Header.ID)
 
-	if err := p.storageItems.CreateTX(tx, m.Header.ID, m.Items); err != nil {
-		tx.Rollback()
-		return err
-	}
+	// if err := p.storageItems.CreateTX(tx, m.Header.ID, m.Items); err != nil {
+	// 	tx.Rollback()
+	// 	return err
+	// }
 
 	fmt.Printf("INvoice items created: %d \n", len(m.Items))
 
