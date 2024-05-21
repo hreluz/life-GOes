@@ -19,6 +19,7 @@ const (
 	mySQLCreateProduct  = `INSERT INTO products(name, observations, price, created_at) VALUES (?, ?, ?, ?)`
 	mySQLGetAllProduct  = `SELECT id, name, observations, price, created_at, updated_at FROM products`
 	mySQLGetProductById = mySQLGetAllProduct + " WHERE id = ?"
+	mySQLUpdateProduct  = `UPDATE products SET name = ?, observations = ?, price = ?, updated_at = ? WHERE id = ?`
 )
 
 type MySQLProduct struct {
@@ -130,4 +131,39 @@ func (p *MySQLProduct) GetByID(id uint) (*product.Model, error) {
 	defer stmt.Close()
 
 	return scanRowProduct(stmt.QueryRow(id))
+}
+
+// Update implement the interface product.Storage
+func (p *MySQLProduct) Update(m *product.Model) error {
+	stmt, err := p.db.Prepare(mySQLUpdateProduct)
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	res, err := stmt.Exec(
+		m.Name,
+		stringToNull(m.Observations),
+		m.Price,
+		timeToNull(m.UpdatedAt),
+		m.ID,
+	)
+
+	if err != nil {
+		return err
+	}
+
+	rowsAffected, err := res.RowsAffected()
+	if err != nil {
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return fmt.Errorf("It does not exist the product with id: %d", m.ID)
+	}
+
+	fmt.Println("Product was updated correctly")
+
+	return nil
 }

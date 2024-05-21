@@ -23,8 +23,8 @@ func mysqlDB() {
 	migrateMysql()
 	// createProductMysql()
 	// getProductsMySQL()
-	getProductByIdMySQL()
-
+	// getProductByIdMySQL()
+	updateProductMySQL()
 }
 
 func createProductMysql() {
@@ -70,6 +70,27 @@ func getProductByIdMySQL() {
 	default:
 		fmt.Println(ms)
 	}
+}
+
+func updateProductMySQL() {
+	storageProduct := storage.NewMySQLProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	m := &product.Model{
+		ID:           2,
+		Name:         "Currency Go",
+		Observations: "This is the go course",
+		Price:        33,
+	}
+
+	err := serviceProduct.Update(m)
+
+	if err != nil {
+		log.Fatalf("Product updated: %v", err)
+
+	}
+
+	getProductsMySQL()
 }
 
 func migrateMysql() {
