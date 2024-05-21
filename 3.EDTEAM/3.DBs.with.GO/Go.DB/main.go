@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 
+	"github.com/hreluz/go-db/pkg/invoice"
 	"github.com/hreluz/go-db/pkg/invoiceheader"
 	"github.com/hreluz/go-db/pkg/invoiceitem"
 	"github.com/hreluz/go-db/pkg/product"
@@ -19,7 +20,39 @@ func main() {
 	// getProducts()
 	// getProductById()
 	// updateProduct()
-	deleteProduct()
+	// deleteProduct()
+
+	createStorageHeaderAndItem()
+}
+
+func createStorageHeaderAndItem() {
+	storage.NewPostgresDB()
+
+	storageHeader := storage.NewPsqlInvoiceHeader(storage.Pool())
+	storageItems := storage.NewPsqlInvoiceItem(storage.Pool())
+
+	storageInvoice := storage.NewPsqlInvoice(
+		storage.Pool(),
+		storageHeader,
+		storageItems,
+	)
+
+	m := &invoice.Model{
+		Header: &invoiceheader.Model{
+			Client: "James Bond 2",
+		},
+		Items: invoiceitem.Models{
+			&invoiceitem.Model{ProductID: 1},
+			&invoiceitem.Model{ProductID: 2},
+		},
+	}
+
+	serviceInvoice := invoice.NewService(storageInvoice)
+
+	if err := serviceInvoice.Create(m); err != nil {
+		log.Fatalf("invoice.Create: %v", err)
+	}
+
 }
 
 func deleteProduct() {
