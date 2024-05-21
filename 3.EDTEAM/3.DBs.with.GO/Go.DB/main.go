@@ -1,8 +1,8 @@
 package main
 
 import (
-	// "database/sql"
-	// "errors"
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
@@ -21,7 +21,10 @@ func main() {
 func mysqlDB() {
 	storage.NewMySQLDB()
 	migrateMysql()
-	createProductMysql()
+	// createProductMysql()
+	// getProductsMySQL()
+	getProductByIdMySQL()
+
 }
 
 func createProductMysql() {
@@ -39,6 +42,34 @@ func createProductMysql() {
 	}
 
 	fmt.Printf("%v", m)
+}
+
+func getProductsMySQL() {
+	storageProduct := storage.NewMySQLProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	ms, err := serviceProduct.GetAll()
+
+	if err != nil {
+		log.Fatalf("product.GetAll: %v", err)
+	}
+
+	fmt.Println(ms)
+}
+
+func getProductByIdMySQL() {
+	storageProduct := storage.NewMySQLProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	ms, err := serviceProduct.GetByID(1)
+	switch {
+	case errors.Is(err, sql.ErrNoRows):
+		fmt.Println("There is no product with this id ")
+	case err != nil:
+		log.Fatalf("product.GetById: %v", err)
+	default:
+		fmt.Println(ms)
+	}
 }
 
 func migrateMysql() {

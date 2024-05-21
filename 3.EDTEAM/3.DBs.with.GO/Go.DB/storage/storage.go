@@ -49,7 +49,7 @@ func NewMySQLDB() {
 		database := "mysqldb"
 		ip := "localhost"
 
-		dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s", userName, password, ip, database)
+		dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?parseTime=true", userName, password, ip, database)
 		driverName := "mysql"
 		db, err = sql.Open(driverName, dataSourceName)
 

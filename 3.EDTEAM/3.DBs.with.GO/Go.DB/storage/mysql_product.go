@@ -16,7 +16,9 @@ const (
 		created_at TIMESTAMP NOT NULL DEFAULT now(),
 		updated_at TIMESTAMP
 	)`
-	mySQLCreateProduct = `INSERT INTO products(name, observations, price, created_at) VALUES (?, ?, ?, ?)`
+	mySQLCreateProduct  = `INSERT INTO products(name, observations, price, created_at) VALUES (?, ?, ?, ?)`
+	mySQLGetAllProduct  = `SELECT id, name, observations, price, created_at, updated_at FROM products`
+	mySQLGetProductById = mySQLGetAllProduct + " WHERE id = ?"
 )
 
 type MySQLProduct struct {
@@ -80,4 +82,52 @@ func (p *MySQLProduct) Create(m *product.Model) error {
 
 	fmt.Printf("Product created correctly with id: %d \n", m.ID)
 	return nil
+}
+
+// Get All implement the interface product.Storage
+func (p *MySQLProduct) GetAll() (product.Models, error) {
+	stmt, err := p.db.Prepare(mySQLGetAllProduct)
+	if err != nil {
+		return nil, err
+	}
+	defer stmt.Close()
+
+	rows, err := stmt.Query()
+
+	if err != nil {
+		return nil, err
+	}
+
+	defer rows.Close()
+
+	ms := make(product.Models, 0)
+
+	for rows.Next() {
+		m, err := scanRowProduct(rows)
+
+		if err != nil {
+			return nil, err
+		}
+
+		ms = append(ms, m)
+	}
+
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return ms, nil
+}
+
+// GetByID implement the interface product.Storage
+func (p *MySQLProduct) GetByID(id uint) (*product.Model, error) {
+	stmt, err := p.db.Prepare(mySQLGetProductById)
+
+	if err != nil {
+		return &product.Model{}, err
+	}
+
+	defer stmt.Close()
+
+	return scanRowProduct(stmt.QueryRow(id))
 }
