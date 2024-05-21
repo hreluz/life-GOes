@@ -13,3 +13,9 @@ Postgress
 #   docker run -v edteampggo:/var/lib/postgresql/data --rm -p 5432:5432 -e POSTGRES_USER=pguser -e POSTGRES_PASSWORD=pgpasswd -e POSTGRES_DB=pgdb postgres  
 #   docker exec -it some-rabbti bash
 #   psql -U pguser -d pgdb
+
+# Mysql Database with docker
+#   docker run -v edteammysql:/var/lib/mysql --rm -p 3306:3306 -e MYSQL_USER=mysqluser -e MYSQL_PASSWORD=secret -e MYSQL_ROOT_PASSWORD=secret -e MYSQL_DATABASE=mysqldb mysql
+#   docker exec -it some-rabbti bash
+#   mysql -u mysqluser -psecret
+

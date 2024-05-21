@@ -7,6 +7,7 @@ import (
 	"sync"
 	"time"
 
+	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 )
 
@@ -35,6 +36,32 @@ func NewPostgresDB() {
 		}
 
 		fmt.Print("Connected to postgres\n")
+
+	})
+}
+
+func NewMySQLDB() {
+
+	once.Do(func() {
+		var err error
+		userName := "mysqluser"
+		password := "secret"
+		database := "mysqldb"
+		ip := "localhost"
+
+		dataSourceName := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s", userName, password, ip, database)
+		driverName := "mysql"
+		db, err = sql.Open(driverName, dataSourceName)
+
+		if err != nil {
+			log.Fatalf("can't open db: %v", err)
+		}
+
+		if err := db.Ping(); err != nil {
+			log.Fatalf("can't do ping: %v", err)
+		}
+
+		fmt.Print("Connected to mysql\n")
 
 	})
 }

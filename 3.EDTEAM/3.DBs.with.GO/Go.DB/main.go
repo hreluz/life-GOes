@@ -14,6 +14,16 @@ import (
 )
 
 func main() {
+	// postgresDB()
+	mysqlDB()
+}
+
+func mysqlDB() {
+	storage.NewMySQLDB()
+	storage.NewMySQLDB()
+}
+
+func postgresDB() {
 	storage.NewPostgresDB()
 	// migrate()
 	// createProduct()
