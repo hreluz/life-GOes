@@ -24,7 +24,8 @@ func mysqlDB() {
 	// createProductMysql()
 	// getProductsMySQL()
 	// getProductByIdMySQL()
-	updateProductMySQL()
+	// updateProductMySQL()
+	deleteProductMySQL()
 }
 
 func createProductMysql() {
@@ -88,6 +89,18 @@ func updateProductMySQL() {
 	if err != nil {
 		log.Fatalf("Product updated: %v", err)
 
+	}
+
+	getProductsMySQL()
+}
+
+func deleteProductMySQL() {
+	storageProduct := storage.NewMySQLProduct(storage.Pool())
+	serviceProduct := product.NewService(storageProduct)
+
+	err := serviceProduct.Delete(1)
+	if err != nil {
+		log.Fatalf("product.Delete: %v", err)
 	}
 
 	getProductsMySQL()

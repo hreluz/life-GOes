@@ -20,6 +20,7 @@ const (
 	mySQLGetAllProduct  = `SELECT id, name, observations, price, created_at, updated_at FROM products`
 	mySQLGetProductById = mySQLGetAllProduct + " WHERE id = ?"
 	mySQLUpdateProduct  = `UPDATE products SET name = ?, observations = ?, price = ?, updated_at = ? WHERE id = ?`
+	mySQLDeleteProduct  = `DELETE FROM products WHERE id = ?`
 )
 
 type MySQLProduct struct {
@@ -164,6 +165,26 @@ func (p *MySQLProduct) Update(m *product.Model) error {
 	}
 
 	fmt.Println("Product was updated correctly")
+
+	return nil
+}
+
+func (p *MySQLProduct) Delete(id uint) error {
+	stmt, err := p.db.Prepare(mySQLDeleteProduct)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	_, err = stmt.Exec(id)
+
+	if err != nil {
+		return err
+	}
+
+	fmt.Println("Product was deleted correctly")
 
 	return nil
 }

@@ -46,7 +46,7 @@ type Storage interface {
 	Update(*Model) error
 	GetAll() (Models, error)
 	GetByID(uint) (*Model, error)
-	// Delete(uint) error
+	Delete(uint) error
 }
 
 // Service of product
@@ -90,6 +90,6 @@ func (s *Service) Update(m *Model) error {
 	return s.storage.Update(m)
 }
 
-// func (s *Service) Delete(id uint) error {
-// 	return s.storage.Delete(id)
-// }
+func (s *Service) Delete(id uint) error {
+	return s.storage.Delete(id)
+}
