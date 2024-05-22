@@ -84,21 +84,36 @@ func main() {
 			log.Fatalf("DAO Invoice: %v", err)
 		}
 
-		createInvoice(&invoiceStorage)
+		createInvoice(&invoiceStorage, serviceProduct)
 	}
 }
 
-func createInvoice(invoiceStorage *invoice.Storage) {
+func createInvoice(invoiceStorage *invoice.Storage, serviceProuct *product.Service) {
+	items := invoiceitem.Models{}
 	clientName, _ := interaction.GetUserInput("Insert Client Name: ")
+	fmt.Println("\n\nProduct Items")
+	fmt.Println("-----------------------------------")
+	showProducts(serviceProuct)
+
+	for {
+		fmt.Printf("Insert Product ID only: ")
+		productId := interaction.GetInputNumber()
+		if productId == 0 {
+			continue
+		}
+		items = append(items, &invoiceitem.Model{ProductID: productId})
+		exit, _ := interaction.GetUserInput("Enter (q) to stop inserting product ids: ")
+
+		if exit == "q" {
+			break
+		}
+	}
 
 	m := &invoice.Model{
 		Header: &invoiceheader.Model{
 			Client: clientName,
 		},
-		Items: invoiceitem.Models{
-			&invoiceitem.Model{ProductID: 1},
-			&invoiceitem.Model{ProductID: 2},
-		},
+		Items: items,
 	}
 
 	serviceInvoice := invoice.NewService(*invoiceStorage)
