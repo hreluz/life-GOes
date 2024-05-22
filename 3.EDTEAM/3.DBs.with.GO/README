@@ -12,6 +12,19 @@ GORM
 ----------------------
     https://gorm.io/index.html
 
+    Connect to DB
+    -------------------
+        https://gorm.io/docs/connecting_to_the_database.html
+
+    Declaring Models
+    -------------------
+        https://gorm.io/docs/models.html
+        https://v1.gorm.io/docs/models.html
+
+    Conventions
+    --------------------
+        https://gorm.io/docs/conventions.html
+        
 
 # Postgres Database with docker
 #   docker run -v edteampggo:/var/lib/postgresql/data --rm -p 5432:5432 -e POSTGRES_USER=pguser -e POSTGRES_PASSWORD=pgpasswd -e POSTGRES_DB=pgdb postgres  

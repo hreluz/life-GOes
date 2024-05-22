@@ -55,7 +55,7 @@ func newPostgresDB() {
 		var err error
 		userName := "pguser"
 		password := "pgpasswd"
-		database := "pgdb"
+		database := "pgdborm"
 
 		dsn := fmt.Sprintf("postgres://%s:%s@localhost/%s?sslmode=disable", userName, password, database)
 		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -74,7 +74,7 @@ func newMySQLDB() {
 		var err error
 		userName := "mysqluser"
 		password := "secret"
-		database := "mysqldb"
+		database := "mysqldborm"
 		ip := "localhost"
 
 		dsn := fmt.Sprintf("%s:%s@tcp(%s:3306)/%s?parseTime=true", userName, password, ip, database)
