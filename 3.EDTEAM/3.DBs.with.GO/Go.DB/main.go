@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"log"
 
-	// "github.com/hreluz/go-db/pkg/invoice"
+	"github.com/hreluz/go-db/pkg/invoice"
 	"github.com/hreluz/go-db/pkg/invoiceheader"
 	"github.com/hreluz/go-db/pkg/invoiceitem"
 	"github.com/hreluz/go-db/pkg/product"
@@ -25,7 +25,38 @@ func mysqlDB() {
 	// getProductsMySQL()
 	// getProductByIdMySQL()
 	// updateProductMySQL()
-	deleteProductMySQL()
+	// deleteProductMySQL()
+	createStorageHeaderAndItemMySQL()
+}
+
+func createStorageHeaderAndItemMySQL() {
+	storage.NewMySQLDB()
+
+	storageHeader := storage.NewMySQLInvoiceHeader(storage.Pool())
+	storageItems := storage.NewMySQLInvoiceItem(storage.Pool())
+
+	storageInvoice := storage.NewMySQLInvoice(
+		storage.Pool(),
+		storageHeader,
+		storageItems,
+	)
+
+	m := &invoice.Model{
+		Header: &invoiceheader.Model{
+			Client: "Ja Bon",
+		},
+		Items: invoiceitem.Models{
+			&invoiceitem.Model{ProductID: 13},
+			&invoiceitem.Model{ProductID: 2},
+		},
+	}
+
+	serviceInvoice := invoice.NewService(storageInvoice)
+
+	if err := serviceInvoice.Create(m); err != nil {
+		log.Fatalf("invoice.Create: %v", err)
+	}
+
 }
 
 func createProductMysql() {

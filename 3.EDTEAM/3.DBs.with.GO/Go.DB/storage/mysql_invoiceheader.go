@@ -3,7 +3,8 @@ package storage
 import (
 	"database/sql"
 	"fmt"
-	// "github.com/hreluz/go-db/pkg/invoiceheader"
+
+	"github.com/hreluz/go-db/pkg/invoiceheader"
 )
 
 const (
@@ -12,7 +13,8 @@ const (
 		client VARCHAR(100) NOT NULL,
 		created_at TIMESTAMP NOT NULL DEFAULT now(),
 		updated_at TIMESTAMP
-	)`
+	) ENGINE = InnoDB`
+	mySQLCreateInvoiceHeader = `INSERT INTO invoice_headers(client) VALUES (?)`
 )
 
 type MySQLInvoiceHeader struct {
@@ -41,5 +43,31 @@ func (p *MySQLInvoiceHeader) Migrate() error {
 	}
 
 	fmt.Println("Migration invoiceHeader executed correctly")
+	return nil
+}
+
+func (p *MySQLInvoiceHeader) CreateTx(tx *sql.Tx, m *invoiceheader.Model) error {
+	stmt, err := tx.Prepare(mySQLCreateInvoiceHeader)
+
+	if err != nil {
+		return err
+	}
+
+	defer stmt.Close()
+
+	result, err := stmt.Exec(m.Client)
+
+	if err != nil {
+		return err
+	}
+
+	id, err := result.LastInsertId()
+
+	if err != nil {
+		return err
+	}
+
+	m.ID = uint(id)
+
 	return nil
 }
