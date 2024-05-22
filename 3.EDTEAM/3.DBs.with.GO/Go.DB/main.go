@@ -1,34 +1,128 @@
 package main
 
 import (
-	// "database/sql"
-	// "errors"
+	"database/sql"
+	"errors"
 	"fmt"
 	"log"
 
-	// "github.com/hreluz/go-db/pkg/invoice"
-	// "github.com/hreluz/go-db/pkg/invoiceheader"
-	// "github.com/hreluz/go-db/pkg/invoiceitem"
+	"github.com/hreluz/go-db/pkg/interaction"
+	"github.com/hreluz/go-db/pkg/invoice"
+	"github.com/hreluz/go-db/pkg/invoiceheader"
+	"github.com/hreluz/go-db/pkg/invoiceitem"
 	"github.com/hreluz/go-db/pkg/product"
 	"github.com/hreluz/go-db/storage"
 )
 
 func main() {
-	// postgresDB()
-	mysqlDB()
-}
-
-func mysqlDB() {
-	driver := storage.Postgres
+	interaction.PrintGreeting()
+	interaction.ShowAvailableDatabases()
+	driver := interaction.GetDBChoice()
 	storage.New(driver)
-	myStorage, err := storage.DAOProduct(driver)
+
+	// product
+	productStorage, err := storage.DAOProduct(driver)
 
 	if err != nil {
-		log.Fatalf("DAOProduct: %v", err)
+		log.Fatalf("DAO Product: %v", err)
 	}
 
-	serviceProduct := product.NewService(myStorage)
+	serviceProduct := product.NewService(productStorage)
 
+	// invoice header
+	invoiceHeaderStorage, err := storage.DAOInvoiceHeader(driver)
+
+	if err != nil {
+		log.Fatalf("DAO InvoiceHeader: %v", err)
+	}
+
+	serviceInvoiceHeader := invoiceheader.NewService(invoiceHeaderStorage)
+
+	// invoice item
+	invoiceItemStorage, err := storage.DAOInvoiceItem(driver)
+
+	if err != nil {
+		log.Fatalf("DAO InvoiceItems: %v", err)
+	}
+
+	serviceInvoiceItems := invoiceitem.NewService(invoiceItemStorage)
+
+	interaction.ShowAvailableActions()
+	choice := interaction.GetActionChoice()
+
+	switch choice {
+	case storage.CREATE_PRODUCT:
+		createProduct(serviceProduct)
+	case storage.UPDATE_PRODUCT:
+		updateProduct(serviceProduct)
+	case storage.DELETE_PRODUCT:
+		deleteProduct(serviceProduct)
+	case storage.SHOW_ALL_PRODUCT:
+		showProducts(serviceProduct)
+	case storage.SHOW_BY_ID_PRODUCT:
+		showProductById(serviceProduct)
+	case storage.MIGRATE_ALL:
+		if err := serviceProduct.Migrate(); err != nil {
+			log.Fatalf("product.Migrate: %v", err)
+		}
+
+		if err := serviceInvoiceHeader.Migrate(); err != nil {
+			log.Fatalf("header.Migrate: %v", err)
+		}
+
+		if err := serviceInvoiceItems.Migrate(); err != nil {
+			log.Fatalf("item.Migrate: %v", err)
+		}
+	case storage.CREATE_INVOICE:
+		invoiceStorage, err := storage.DAOInvoice(
+			driver,
+			invoiceHeaderStorage,
+			invoiceItemStorage,
+		)
+
+		if err != nil {
+			log.Fatalf("DAO Invoice: %v", err)
+		}
+
+		createInvoice(&invoiceStorage)
+	}
+}
+
+func createInvoice(invoiceStorage *invoice.Storage) {
+	clientName, _ := interaction.GetUserInput("Insert Client Name: ")
+
+	m := &invoice.Model{
+		Header: &invoiceheader.Model{
+			Client: clientName,
+		},
+		Items: invoiceitem.Models{
+			&invoiceitem.Model{ProductID: 1},
+			&invoiceitem.Model{ProductID: 2},
+		},
+	}
+
+	serviceInvoice := invoice.NewService(*invoiceStorage)
+
+	if err := serviceInvoice.Create(m); err != nil {
+		log.Fatalf("invoice.Create: %v", err)
+	}
+}
+
+func showProductById(serviceProduct *product.Service) {
+	fmt.Printf("Insert Product ID: ")
+	id := interaction.GetInputNumber()
+	ms, err := serviceProduct.GetByID(id)
+	switch {
+	case errors.Is(err, sql.ErrNoRows):
+		fmt.Println("There is no product with this id ")
+	case err != nil:
+		log.Fatalf("product.GetById: %v", err)
+	default:
+		fmt.Println(ms)
+	}
+}
+
+func showProducts(serviceProduct *product.Service) {
 	ms, err := serviceProduct.GetAll()
 
 	if err != nil {
@@ -36,289 +130,65 @@ func mysqlDB() {
 	}
 
 	fmt.Println(ms)
-
-	// migrateMysql()
-	// createProductMysql()
-	// getProductsMySQL()
-	// getProductByIdMySQL()
-	// updateProductMySQL()
-	// deleteProductMySQL()
-	// createStorageHeaderAndItemMySQL()
 }
 
-// func createStorageHeaderAndItemMySQL() {
-// 	storage.NewMySQLDB()
+func deleteProduct(serviceProduct *product.Service) {
+	fmt.Printf("Insert Product ID: ")
+	id := interaction.GetInputNumber()
+	err := serviceProduct.Delete(id)
 
-// 	storageHeader := storage.NewMySQLInvoiceHeader(storage.Pool())
-// 	storageItems := storage.NewMySQLInvoiceItem(storage.Pool())
-
-// 	storageInvoice := storage.NewMySQLInvoice(
-// 		storage.Pool(),
-// 		storageHeader,
-// 		storageItems,
-// 	)
-
-// 	m := &invoice.Model{
-// 		Header: &invoiceheader.Model{
-// 			Client: "Ja Bon",
-// 		},
-// 		Items: invoiceitem.Models{
-// 			&invoiceitem.Model{ProductID: 13},
-// 			&invoiceitem.Model{ProductID: 2},
-// 		},
-// 	}
-
-// 	serviceInvoice := invoice.NewService(storageInvoice)
-
-// 	if err := serviceInvoice.Create(m); err != nil {
-// 		log.Fatalf("invoice.Create: %v", err)
-// 	}
-
-// }
-
-// func createProductMysql() {
-// 	storageProduct := storage.NewMySQLProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	m := &product.Model{
-// 		Name:         "Go Course",
-// 		Price:        50,
-// 		Observations: "almost done",
-// 	}
-
-// 	if err := serviceProduct.Create(m); err != nil {
-// 		log.Fatalf("product.Create: %v", err)
-// 	}
-
-// 	fmt.Printf("%v", m)
-// }
-
-// func getProductsMySQL() {
-// 	storageProduct := storage.NewMySQLProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	ms, err := serviceProduct.GetAll()
-
-// 	if err != nil {
-// 		log.Fatalf("product.GetAll: %v", err)
-// 	}
-
-// 	fmt.Println(ms)
-// }
-
-// func getProductByIdMySQL() {
-// 	storageProduct := storage.NewMySQLProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	ms, err := serviceProduct.GetByID(1)
-// 	switch {
-// 	case errors.Is(err, sql.ErrNoRows):
-// 		fmt.Println("There is no product with this id ")
-// 	case err != nil:
-// 		log.Fatalf("product.GetById: %v", err)
-// 	default:
-// 		fmt.Println(ms)
-// 	}
-// }
-
-// func updateProductMySQL() {
-// 	storageProduct := storage.NewMySQLProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	m := &product.Model{
-// 		ID:           2,
-// 		Name:         "Currency Go",
-// 		Observations: "This is the go course",
-// 		Price:        33,
-// 	}
-
-// 	err := serviceProduct.Update(m)
-
-// 	if err != nil {
-// 		log.Fatalf("Product updated: %v", err)
-
-// 	}
-
-// 	getProductsMySQL()
-// }
-
-// func deleteProductMySQL() {
-// 	storageProduct := storage.NewMySQLProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	err := serviceProduct.Delete(1)
-// 	if err != nil {
-// 		log.Fatalf("product.Delete: %v", err)
-// 	}
-
-// 	getProductsMySQL()
-// }
-
-// func migrateMysql() {
-
-// 	storageProduct := storage.NewMySQLProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	if err := serviceProduct.Migrate(); err != nil {
-// 		log.Fatalf("product.Migrate: %v", err)
-// 	}
-
-// 	storageHeader := storage.NewMySQLInvoiceHeader(storage.Pool())
-// 	serviceHeader := invoiceheader.NewService(storageHeader)
-
-// 	if err := serviceHeader.Migrate(); err != nil {
-// 		log.Fatalf("header.Migrate: %v", err)
-// 	}
-
-// 	storageItem := storage.NewMySQLInvoiceItem(storage.Pool())
-// 	serviceItem := invoiceitem.NewService(storageItem)
-
-// 	if err := serviceItem.Migrate(); err != nil {
-// 		log.Fatalf("item.Migrate: %v", err)
-// 	}
-// }
-
-func postgresDB() {
-	// storage.NewPostgresDB()
-	// migratePGDB()
-	// createProductPGDB()
-	// getProductsPGDB()
-	// getProductByIdPGDB()
-	// updateProductPGDB()
-	// deleteProductPGDB()
-
-	// createStorageHeaderAndItemPGDB()
+	if err != nil {
+		log.Fatalf("product.Delete: %v", err)
+	}
 }
 
-// func createStorageHeaderAndItemPGDB() {
-// 	storage.NewPostgresDB()
+func updateProduct(serviceProduct *product.Service) {
+	fmt.Printf("Insert Product ID: ")
+	id := interaction.GetInputNumber()
+	ms, err := serviceProduct.GetByID(id)
+	switch {
+	case errors.Is(err, sql.ErrNoRows):
+		fmt.Println("There is no product with this id ")
+	case err != nil:
+		log.Fatalf("product.GetById: %v", err)
+	default:
+		fmt.Println(ms)
+	}
+	productName, _ := interaction.GetUserInput("Insert New Product Name: ")
+	fmt.Printf("Insert New Product Price: ")
+	productPrice := interaction.GetInputNumber()
+	productObservation, _ := interaction.GetUserInput("Insert New Product Observation: ")
 
-// 	storageHeader := storage.NewPsqlInvoiceHeader(storage.Pool())
-// 	storageItems := storage.NewPsqlInvoiceItem(storage.Pool())
+	m := &product.Model{
+		ID:           id,
+		Name:         productName,
+		Observations: productObservation,
+		Price:        int(productPrice),
+	}
 
-// 	storageInvoice := storage.NewPsqlInvoice(
-// 		storage.Pool(),
-// 		storageHeader,
-// 		storageItems,
-// 	)
+	if err := serviceProduct.Update(m); err != nil {
+		log.Fatalf("Product updated: %v", err)
 
-// 	m := &invoice.Model{
-// 		Header: &invoiceheader.Model{
-// 			Client: "James Bond 2",
-// 		},
-// 		Items: invoiceitem.Models{
-// 			&invoiceitem.Model{ProductID: 1},
-// 			&invoiceitem.Model{ProductID: 2},
-// 		},
-// 	}
+	}
 
-// 	serviceInvoice := invoice.NewService(storageInvoice)
+	fmt.Println(m)
+}
 
-// 	if err := serviceInvoice.Create(m); err != nil {
-// 		log.Fatalf("invoice.Create: %v", err)
-// 	}
+func createProduct(serviceProduct *product.Service) {
+	productName, _ := interaction.GetUserInput("Insert Product Name: ")
+	fmt.Printf("Insert Product Price: ")
+	productPrice := interaction.GetInputNumber()
+	productObservation, _ := interaction.GetUserInput("Insert Product Observation: ")
 
-// }
+	m := &product.Model{
+		Name:         productName,
+		Price:        int(productPrice),
+		Observations: productObservation,
+	}
 
-// func deleteProductPGDB() {
-// 	storageProduct := storage.NewPsqlProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
+	if err := serviceProduct.Create(m); err != nil {
+		log.Fatalf("product.Create: %v", err)
+	}
 
-// 	err := serviceProduct.Delete(4)
-// 	if err != nil {
-// 		log.Fatalf("product.Delete: %v", err)
-// 	}
-
-// 	getProductsPGDB()
-// }
-
-// func updateProductPGDB() {
-// 	storageProduct := storage.NewPsqlProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	m := &product.Model{
-// 		ID:           222,
-// 		Name:         "Currency Go",
-// 		Observations: "This is the go course",
-// 		Price:        33,
-// 	}
-
-// 	err := serviceProduct.Update(m)
-
-// 	if err != nil {
-// 		log.Fatalf("Product updated: %v", err)
-
-// 	}
-
-// 	getProductsPGDB()
-// }
-
-// func getProductByIdPGDB() {
-// 	storageProduct := storage.NewPsqlProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	ms, err := serviceProduct.GetByID(1)
-// 	switch {
-// 	case errors.Is(err, sql.ErrNoRows):
-// 		fmt.Println("There is no product with this id ")
-// 	case err != nil:
-// 		log.Fatalf("product.GetById: %v", err)
-// 	default:
-// 		fmt.Println(ms)
-// 	}
-// }
-
-// func getProductsPGDB() {
-// 	storageProduct := storage.NewPsqlProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	ms, err := serviceProduct.GetAll()
-
-// 	if err != nil {
-// 		log.Fatalf("product.GetAll: %v", err)
-// 	}
-
-// 	fmt.Println(ms)
-// }
-
-// func createProductPGDB() {
-// 	storageProduct := storage.NewPsqlProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	m := &product.Model{
-// 		Name:         "Go Course",
-// 		Price:        50,
-// 		Observations: "almost done",
-// 	}
-
-// 	if err := serviceProduct.Create(m); err != nil {
-// 		log.Fatalf("product.Create: %v", err)
-// 	}
-
-// 	fmt.Printf("%v", m)
-// }
-
-// func migratePGDB() {
-
-// 	storageProduct := storage.NewPsqlProduct(storage.Pool())
-// 	serviceProduct := product.NewService(storageProduct)
-
-// 	if err := serviceProduct.Migrate(); err != nil {
-// 		log.Fatalf("product.Migrate: %v", err)
-// 	}
-
-// 	storageInvoiceHeader := storage.NewPsqlInvoiceHeader(storage.Pool())
-// 	serviceInvoiceHeader := invoiceheader.NewService(storageInvoiceHeader)
-
-// 	if err := serviceInvoiceHeader.Migrate(); err != nil {
-// 		log.Fatalf("invoiceHeader.Migrate: %v", err)
-// 	}
-
-// 	storageInvoiceItem := storage.NewPsqlInvoiceItem(storage.Pool())
-// 	serviceInvoiceItem := invoiceitem.NewService(storageInvoiceItem)
-
-// 	if err := serviceInvoiceItem.Migrate(); err != nil {
-// 		log.Fatalf("invoiceItem.Migrate: %v", err)
-// 	}
-
-// }
+	fmt.Printf("%v", m)
+}

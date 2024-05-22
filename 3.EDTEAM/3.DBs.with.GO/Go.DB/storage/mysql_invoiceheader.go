@@ -17,17 +17,17 @@ const (
 	mySQLCreateInvoiceHeader = `INSERT INTO invoice_headers(client) VALUES (?)`
 )
 
-type MySQLInvoiceHeader struct {
+type mySQLInvoiceHeader struct {
 	db *sql.DB
 }
 
-// NewMySQLInvoiceHeader return a new pointer of MySQLInvoiceHeader
-func NewMySQLInvoiceHeader(db *sql.DB) *MySQLInvoiceHeader {
-	return &MySQLInvoiceHeader{db}
+// newMySQLInvoiceHeader return a new pointer of mySQLInvoiceHeader
+func newMySQLInvoiceHeader(db *sql.DB) *mySQLInvoiceHeader {
+	return &mySQLInvoiceHeader{db}
 }
 
 // Migrate implement the interface invoiceHeader.Storage
-func (p *MySQLInvoiceHeader) Migrate() error {
+func (p *mySQLInvoiceHeader) Migrate() error {
 	stmt, err := p.db.Prepare(mySQLMigrateInvoiceHeader)
 
 	if err != nil {
@@ -46,7 +46,7 @@ func (p *MySQLInvoiceHeader) Migrate() error {
 	return nil
 }
 
-func (p *MySQLInvoiceHeader) CreateTx(tx *sql.Tx, m *invoiceheader.Model) error {
+func (p *mySQLInvoiceHeader) CreateTx(tx *sql.Tx, m *invoiceheader.Model) error {
 	stmt, err := tx.Prepare(mySQLCreateInvoiceHeader)
 
 	if err != nil {

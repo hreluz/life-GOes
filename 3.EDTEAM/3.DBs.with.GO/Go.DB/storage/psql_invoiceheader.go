@@ -19,17 +19,17 @@ const (
 	psqlCreateInvoiceHeader = `INSERT INTO invoice_headers(client) VALUES ($1) RETURNING id, created_at`
 )
 
-type PsqlInvoiceHeader struct {
+type psqlInvoiceHeader struct {
 	db *sql.DB
 }
 
-// NewPsqlInvoiceHeader return a new pointer of PsqlInvoiceHeader
-func NewPsqlInvoiceHeader(db *sql.DB) *PsqlInvoiceHeader {
-	return &PsqlInvoiceHeader{db}
+// newPsqlInvoiceHeader return a new pointer of psqlInvoiceHeader
+func newPsqlInvoiceHeader(db *sql.DB) *psqlInvoiceHeader {
+	return &psqlInvoiceHeader{db}
 }
 
 // Migrate implement the interface invoiceHeader.Storage
-func (p *PsqlInvoiceHeader) Migrate() error {
+func (p *psqlInvoiceHeader) Migrate() error {
 	stmt, err := p.db.Prepare(psqlMigrateInvoiceHeader)
 
 	if err != nil {
@@ -48,7 +48,7 @@ func (p *PsqlInvoiceHeader) Migrate() error {
 	return nil
 }
 
-func (p *PsqlInvoiceHeader) CreateTx(tx *sql.Tx, m *invoiceheader.Model) error {
+func (p *psqlInvoiceHeader) CreateTx(tx *sql.Tx, m *invoiceheader.Model) error {
 	stmt, err := tx.Prepare(psqlCreateInvoiceHeader)
 
 	if err != nil {

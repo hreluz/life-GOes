@@ -21,17 +21,17 @@ const (
 	psqlCreateInvoiceItem = `INSERT INTO invoice_items(invoice_header_id, product_id) VALUES($1, $2) RETURNING id, created_at`
 )
 
-type PsqlInvoiceItem struct {
+type psqlInvoiceItem struct {
 	db *sql.DB
 }
 
-// NewPsqlInvoiceItem return a new pointer of PsqlInvoiceItem
-func NewPsqlInvoiceItem(db *sql.DB) *PsqlInvoiceItem {
-	return &PsqlInvoiceItem{db}
+// newPsqlInvoiceItem return a new pointer of psqlInvoiceItem
+func newPsqlInvoiceItem(db *sql.DB) *psqlInvoiceItem {
+	return &psqlInvoiceItem{db}
 }
 
 // Migrate implement the interface invoiceItem.Storage
-func (p *PsqlInvoiceItem) Migrate() error {
+func (p *psqlInvoiceItem) Migrate() error {
 	stmt, err := p.db.Prepare(psqlMigrateInvoiceItem)
 
 	if err != nil {
@@ -51,7 +51,7 @@ func (p *PsqlInvoiceItem) Migrate() error {
 }
 
 // CreateTx implement the interface invoiceitem.Storage
-func (p *PsqlInvoiceItem) CreateTX(tx *sql.Tx, headerID uint, ms invoiceitem.Models) error {
+func (p *psqlInvoiceItem) CreateTX(tx *sql.Tx, headerID uint, ms invoiceitem.Models) error {
 	stmt, err := tx.Prepare(psqlCreateInvoiceItem)
 
 	if err != nil {

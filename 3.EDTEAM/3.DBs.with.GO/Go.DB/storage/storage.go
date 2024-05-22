@@ -8,6 +8,9 @@ import (
 	"time"
 
 	_ "github.com/go-sql-driver/mysql"
+	"github.com/hreluz/go-db/pkg/invoice"
+	"github.com/hreluz/go-db/pkg/invoiceheader"
+	"github.com/hreluz/go-db/pkg/invoiceitem"
 	"github.com/hreluz/go-db/pkg/product"
 	_ "github.com/lib/pq"
 )
@@ -25,6 +28,19 @@ const (
 	Postgres Driver = "POSTGRES"
 )
 
+type MENU_OPTIONS string
+
+const (
+	CREATE_PRODUCT     MENU_OPTIONS = "CREATE PRODUCT"
+	UPDATE_PRODUCT     MENU_OPTIONS = "UPDATE PRODUCT"
+	DELETE_PRODUCT     MENU_OPTIONS = "DELETE PRODUCT"
+	SHOW_BY_ID_PRODUCT MENU_OPTIONS = "SHOW PRODUCT BY ID"
+	SHOW_ALL_PRODUCT   MENU_OPTIONS = "SHOW ALL PRODUCTS"
+	CREATE_INVOICE     MENU_OPTIONS = "CREATE INVOICE"
+	SHOW_INVOICES      MENU_OPTIONS = "SHOW INVOICES"
+	MIGRATE_ALL        MENU_OPTIONS = "DO MIGRATIONS"
+)
+
 // New create the conection with db
 func New(d Driver) {
 	switch d {
@@ -35,12 +51,45 @@ func New(d Driver) {
 	}
 }
 
+func DAOInvoice(driver Driver, ih invoiceheader.Storage, ii invoiceitem.Storage) (invoice.Storage, error) {
+	switch driver {
+	case Postgres:
+		return newPsqlInvoice(db, ih, ii), nil
+	case MySQL:
+		return newMySQLInvoice(db, ih, ii), nil
+	default:
+		return nil, fmt.Errorf("Driver not implemented")
+	}
+}
+
+func DAOInvoiceHeader(driver Driver) (invoiceheader.Storage, error) {
+	switch driver {
+	case Postgres:
+		return newPsqlInvoiceHeader(db), nil
+	case MySQL:
+		return newMySQLInvoiceHeader(db), nil
+	default:
+		return nil, fmt.Errorf("Driver not implemented")
+	}
+}
+
+func DAOInvoiceItem(driver Driver) (invoiceitem.Storage, error) {
+	switch driver {
+	case Postgres:
+		return newPsqlInvoiceItem(db), nil
+	case MySQL:
+		return newMySQLInvoiceItem(db), nil
+	default:
+		return nil, fmt.Errorf("Driver not implemented")
+	}
+}
+
 func DAOProduct(driver Driver) (product.Storage, error) {
 	switch driver {
 	case Postgres:
 		return newPsqlProduct(db), nil
 	case MySQL:
-		return NewMySQLProduct(db), nil
+		return newMySQLProduct(db), nil
 	default:
 		return nil, fmt.Errorf("Driver not implemented")
 	}

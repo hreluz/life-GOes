@@ -19,17 +19,17 @@ const (
 	mySQLCreateInvoiceItem = `INSERT INTO invoice_items(invoice_header_id, product_id) VALUES(?, ?)`
 )
 
-type MySQLInvoiceItem struct {
+type mySQLInvoiceItem struct {
 	db *sql.DB
 }
 
-// NewMySQLInvoiceItem return a new pointer of MySQLInvoiceItem
-func NewMySQLInvoiceItem(db *sql.DB) *MySQLInvoiceItem {
-	return &MySQLInvoiceItem{db}
+// newMySQLInvoiceItem return a new pointer of mySQLInvoiceItem
+func newMySQLInvoiceItem(db *sql.DB) *mySQLInvoiceItem {
+	return &mySQLInvoiceItem{db}
 }
 
 // Migrate implement the interface invoiceItem.Storage
-func (p *MySQLInvoiceItem) Migrate() error {
+func (p *mySQLInvoiceItem) Migrate() error {
 	stmt, err := p.db.Prepare(mySQLMigrateInvoiceItem)
 
 	if err != nil {
@@ -49,7 +49,7 @@ func (p *MySQLInvoiceItem) Migrate() error {
 }
 
 // CreateTx implement the interface invoiceitem.Storage
-func (p *MySQLInvoiceItem) CreateTX(tx *sql.Tx, headerID uint, ms invoiceitem.Models) error {
+func (p *mySQLInvoiceItem) CreateTX(tx *sql.Tx, headerID uint, ms invoiceitem.Models) error {
 	stmt, err := tx.Prepare(mySQLCreateInvoiceItem)
 
 	if err != nil {

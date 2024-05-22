@@ -27,8 +27,8 @@ type mySQLProduct struct {
 	db *sql.DB
 }
 
-// NewMySQLProduct return a new pointer of mySQLProduct
-func NewMySQLProduct(db *sql.DB) *mySQLProduct {
+// newMySQLProduct return a new pointer of mySQLProduct
+func newMySQLProduct(db *sql.DB) *mySQLProduct {
 	return &mySQLProduct{db}
 }
 
