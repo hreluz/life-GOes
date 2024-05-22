@@ -8,6 +8,10 @@ Postgress
     https://pkg.go.dev/github.com/lib/pq
 
 
+GORM
+----------------------
+    https://gorm.io/index.html
+
 
 # Postgres Database with docker
 #   docker run -v edteampggo:/var/lib/postgresql/data --rm -p 5432:5432 -e POSTGRES_USER=pguser -e POSTGRES_PASSWORD=pgpasswd -e POSTGRES_DB=pgdb postgres  
