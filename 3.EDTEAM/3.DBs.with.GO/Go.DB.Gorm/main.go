@@ -15,7 +15,25 @@ func main() {
 	// createProducts()
 	// readProducts()
 	// readProduct()
-	updateProduct()
+	// updateProduct()
+	// softDeleteProduct()
+	forceDeleteProduct()
+}
+
+func forceDeleteProduct() {
+	product := model.Product{}
+	product.ID = 3
+
+	storage.DB().Unscoped().Delete(&product)
+}
+
+func softDeleteProduct() {
+	product := model.Product{}
+	product.ID = 3
+
+	storage.DB().Delete(&product)
+
+	readProducts()
 }
 
 func updateProduct() {
@@ -27,7 +45,6 @@ func updateProduct() {
 	)
 
 	readProducts()
-
 }
 
 func readProduct() {
