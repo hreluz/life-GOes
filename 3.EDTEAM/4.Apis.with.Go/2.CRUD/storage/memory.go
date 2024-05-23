@@ -57,3 +57,25 @@ func (m *Memory) Delete(ID int) error {
 
 	return nil
 }
+
+// GetById returns a person by ID
+func (m *Memory) GetById(ID int) (model.Person, error) {
+	person, ok := m.Persons[ID]
+
+	if !ok {
+		return person, fmt.Errorf("ID: %d: %w", ID, model.ErrIDPersonDoesNotExist)
+	}
+
+	return person, nil
+}
+
+// GetAll returns all the persons in memory
+func (m *Memory) GetAll() (model.Persons, error) {
+	var result model.Persons
+
+	for _, v := range m.Persons {
+		result = append(result, v)
+	}
+
+	return result, nil
+}
