@@ -46,3 +46,33 @@ func (p *person) create(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(`{"message_type": "message", "message": "Person was created successfully"}`))
 }
+
+func (p *person) getAll(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(`{"message_type": "error", "message": "Method not supported"}`))
+		return
+	}
+
+	resp, err := p.storage.GetAll()
+
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message_type": "error", "message": "There was a problem when getting people"}`))
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusCreated)
+
+	err = json.NewEncoder(w).Encode(&resp)
+
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message_type": "error", "message": "There was a problem transforming slice in json"}`))
+		return
+	}
+}
