@@ -1,10 +1,13 @@
 package model
 
-import "time"
+import "gorm.io/gorm"
+
+// import "time"
 
 // Model of product
 type Product struct {
-	ID           uint
+	gorm.Model
+	// ID           uint
 	Name         string  `gorm:"type:varchar(100); not null;"`
 	Observations *string `gorm:"type:varchar(200);"`
 	Price        int     `gorm:"not null;"`
@@ -15,7 +18,8 @@ type Product struct {
 
 // Model of invoicehaeder
 type InvoiceHeader struct {
-	ID           uint
+	gorm.Model
+	// ID           uint
 	Client       string `gorm:"type:varchar(100); not null;"`
 	InvoiceItems []InvoiceItem
 	// CreatedAt time.Time
@@ -24,7 +28,8 @@ type InvoiceHeader struct {
 
 // Model of invoiceitem
 type InvoiceItem struct {
-	ID              uint
+	gorm.Model
+	// ID              uint
 	InvoiceHeaderID uint
 	ProductID       uint
 	// CreatedAt       time.Time

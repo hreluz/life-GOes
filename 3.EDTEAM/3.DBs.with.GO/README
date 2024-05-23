@@ -36,3 +36,15 @@ GORM
 #   docker exec -it some-rabbti bash
 #   mysql -u mysqluser -psecret
 
+
+# --- MYSQL ---
+# Update access on mysql
+#   GRANT ALL PRIVILEGES ON `mysqldborm`.* TO mysqluser;
+#   FLUSH PRIVILEGES;
+
+# Check table detail
+# DESCRIBE table_name
+
+# --- POSTGRESQL ---
+# show tables -> \d
+# describe table -> \d products
