@@ -13,7 +13,14 @@ func main() {
 
 	migrateTables()
 	// createProducts()
-	readProducts()
+	// readProducts()
+	readProduct()
+}
+
+func readProduct() {
+	product := model.Product{}
+	storage.DB().First(&product, 2)
+	fmt.Println(product)
 }
 
 func readProducts() {
