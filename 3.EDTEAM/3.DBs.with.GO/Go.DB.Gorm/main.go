@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+
 	"github.com/hreluz/go-db-gorm/model"
 	"github.com/hreluz/go-db-gorm/storage"
 )
@@ -9,13 +11,30 @@ func main() {
 	driver := storage.Postgres
 	storage.New(driver)
 
-	// Migrate
+	migrateTables()
+	// createProducts()
+	readProducts()
+}
+
+func readProducts() {
+	products := make([]model.Product, 0)
+	storage.DB().Find(&products)
+
+	for _, product := range products {
+		fmt.Printf("%d - %s\n", product.ID, product.Name)
+	}
+
+}
+
+func migrateTables() {
 	storage.DB().AutoMigrate(
 		&model.Product{},
 		&model.InvoiceHeader{},
 		&model.InvoiceItem{},
 	)
+}
 
+func createProducts() {
 	product1 := model.Product{
 		Name:  "Go Course",
 		Price: 88,
