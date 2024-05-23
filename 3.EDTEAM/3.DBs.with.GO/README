@@ -24,6 +24,10 @@ GORM
     Conventions
     --------------------
         https://gorm.io/docs/conventions.html
+
+    Create
+    ---------------------
+        https://gorm.io/docs/create.html
         
 
 # Postgres Database with docker
