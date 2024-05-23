@@ -17,7 +17,22 @@ func main() {
 	// readProduct()
 	// updateProduct()
 	// softDeleteProduct()
-	forceDeleteProduct()
+	// forceDeleteProduct()
+	transactions()
+}
+
+func transactions() {
+
+	invoice := model.InvoiceHeader{
+		Client: "James Bond",
+		InvoiceItems: []model.InvoiceItem{
+			model.InvoiceItem{ProductID: 1},
+			model.InvoiceItem{ProductID: 2},
+		},
+	}
+
+	storage.DB().Create(&invoice)
+
 }
 
 func forceDeleteProduct() {
