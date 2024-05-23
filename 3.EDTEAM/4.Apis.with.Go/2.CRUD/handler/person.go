@@ -33,7 +33,7 @@ func (p *person) create(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	p.storage.Create(&data)
+	err = p.storage.Create(&data)
 
 	if err != nil {
 		w.Header().Set("Content-Type", "application/json")
