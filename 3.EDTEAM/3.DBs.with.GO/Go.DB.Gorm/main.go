@@ -8,13 +8,26 @@ import (
 )
 
 func main() {
-	driver := storage.Postgres
+	driver := storage.MySQL
 	storage.New(driver)
 
 	migrateTables()
 	// createProducts()
 	// readProducts()
-	readProduct()
+	// readProduct()
+	updateProduct()
+}
+
+func updateProduct() {
+	product := model.Product{}
+	product.ID = 3
+
+	storage.DB().Model(&product).Updates(
+		model.Product{Name: "CSS course", Price: 777},
+	)
+
+	readProducts()
+
 }
 
 func readProduct() {
@@ -28,7 +41,7 @@ func readProducts() {
 	storage.DB().Find(&products)
 
 	for _, product := range products {
-		fmt.Printf("%d - %s\n", product.ID, product.Name)
+		fmt.Printf("%d - %s - %d\n", product.ID, product.Name, product.Price)
 	}
 
 }
