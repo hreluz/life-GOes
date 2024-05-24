@@ -18,9 +18,8 @@ func newPerson(storage Storage) person {
 
 func (p *person) create(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"message_type": "error", "message": "Method not supported"}`))
+		response := newResponse(Error, "Method not supported", nil)
+		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
@@ -28,40 +27,35 @@ func (p *person) create(w http.ResponseWriter, r *http.Request) {
 	err := json.NewDecoder(r.Body).Decode(&data)
 
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"message_type": "error", "message": "The person sent is not valid"}`))
+		response := newResponse(Error, "The person sent is not valid", nil)
+		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
 	err = p.storage.Create(&data)
 
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message_type": "error", "message": "There was a problem creating the person"}`))
+		response := newResponse(Error, "There was a problem creating the person", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-	w.Write([]byte(`{"message_type": "message", "message": "Person was created successfully"}`))
+	response := newResponse(Message, "Person was created successfully", nil)
+	responseJSON(w, http.StatusCreated, response)
 }
 
 func (p *person) update(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPut {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"message_type": "error", "message": "Method not supported"}`))
+		response := newResponse(Error, "Method not supported", nil)
+		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
 	ID, err := strconv.Atoi(r.URL.Query().Get("id"))
 
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"message_type": "error", "message": "The id must be an integer"}`))
+		response := newResponse(Error, "The id must be an integer", nil)
+		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
@@ -69,53 +63,38 @@ func (p *person) update(w http.ResponseWriter, r *http.Request) {
 	err = json.NewDecoder(r.Body).Decode(&data)
 
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"message_type": "error", "message": "The person sent is not valid"}`))
+		response := newResponse(Error, "The person sent is not valid", nil)
+		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
 	err = p.storage.Update(ID, &data)
 
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message_type": "error", "message": "There was a problem when getting people"}`))
+		response := newResponse(Error, "There was a problem updating", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`{"message_type": "message", "message": "Person was updated correctly"}`))
-
+	response := newResponse(Message, "Person was updated correctly", nil)
+	responseJSON(w, http.StatusOK, response)
 }
 
 func (p *person) getAll(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		w.Write([]byte(`{"message_type": "error", "message": "Method not supported"}`))
+		response := newResponse(Error, "Method not supported", nil)
+		responseJSON(w, http.StatusBadRequest, response)
 		return
 	}
 
-	resp, err := p.storage.GetAll()
+	data, err := p.storage.GetAll()
 
 	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message_type": "error", "message": "There was a problem when getting people"}`))
+		response := newResponse(Error, "There was a problem when getting people", nil)
+		responseJSON(w, http.StatusInternalServerError, response)
 		return
 	}
 
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusCreated)
-
-	err = json.NewEncoder(w).Encode(&resp)
-
-	if err != nil {
-		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusInternalServerError)
-		w.Write([]byte(`{"message_type": "error", "message": "There was a problem transforming slice in json"}`))
-		return
-	}
+	response := newResponse(Message, "Ok", data)
+	responseJSON(w, http.StatusOK, response)
 }
