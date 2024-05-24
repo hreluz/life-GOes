@@ -3,6 +3,7 @@ package handler
 import (
 	"encoding/json"
 	"net/http"
+	"strconv"
 
 	"github.com/hreluz/go-api-crud/model"
 )
@@ -45,6 +46,48 @@ func (p *person) create(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated)
 	w.Write([]byte(`{"message_type": "message", "message": "Person was created successfully"}`))
+}
+
+func (p *person) update(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodPut {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(`{"message_type": "error", "message": "Method not supported"}`))
+		return
+	}
+
+	ID, err := strconv.Atoi(r.URL.Query().Get("id"))
+
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(`{"message_type": "error", "message": "The id must be an integer"}`))
+		return
+	}
+
+	data := model.Person{}
+	err = json.NewDecoder(r.Body).Decode(&data)
+
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(`{"message_type": "error", "message": "The person sent is not valid"}`))
+		return
+	}
+
+	err = p.storage.Update(ID, &data)
+
+	if err != nil {
+		w.Header().Set("Content-Type", "application/json")
+		w.WriteHeader(http.StatusInternalServerError)
+		w.Write([]byte(`{"message_type": "error", "message": "There was a problem when getting people"}`))
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write([]byte(`{"message_type": "message", "message": "Person was updated correctly"}`))
+
 }
 
 func (p *person) getAll(w http.ResponseWriter, r *http.Request) {
