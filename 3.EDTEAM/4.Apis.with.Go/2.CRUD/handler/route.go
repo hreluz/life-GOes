@@ -9,5 +9,6 @@ func RoutePerson(mux *http.ServeMux, storage Storage) {
 	mux.HandleFunc("/v1/persons/get-all", h.getAll)
 	mux.HandleFunc("/v1/persons/update", h.update)
 	mux.HandleFunc("/v1/persons/delete", h.delete)
+	mux.HandleFunc("/v1/persons/get-by-id", h.getById)
 
 }

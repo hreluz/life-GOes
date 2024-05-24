@@ -115,6 +115,33 @@ func (p *person) delete(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func (p *person) getById(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		response := newResponse(Error, "Method not supported", nil)
+		responseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	ID, err := strconv.Atoi(r.URL.Query().Get("id"))
+
+	if err != nil {
+		response := newResponse(Error, "The id must be an integer", nil)
+		responseJSON(w, http.StatusBadRequest, response)
+		return
+	}
+
+	person, err := p.storage.GetById(ID)
+
+	if err != nil {
+		response := newResponse(Error, "Person not found", nil)
+		responseJSON(w, http.StatusNotFound, response)
+		return
+	}
+
+	response := newResponse(Message, "Ok", person)
+	responseJSON(w, http.StatusOK, response)
+}
+
 func (p *person) getAll(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		response := newResponse(Error, "Method not supported", nil)
