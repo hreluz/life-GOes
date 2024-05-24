@@ -1,0 +1,6 @@
+create private certificate
+    openssl genrsa -out app.rsa 1024  
+
+
+create public certificate
+    openssl rsa -in app.rsa -pubout > app.rsa.pub 
