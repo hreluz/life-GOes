@@ -10,6 +10,6 @@ type Login struct {
 
 // Claim (body token)
 type Claim struct {
-	Email          string `json:"email"`
-	StandardClaims jwt.RegisteredClaims
+	Email string `json:"email"`
+	jwt.RegisteredClaims
 }
