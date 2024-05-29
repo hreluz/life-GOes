@@ -20,6 +20,7 @@ func main() {
 	mux := http.NewServeMux()
 
 	handler.RoutePerson(mux, &store)
+	handler.RouteLogin(mux, &store)
 
 	log.Println("Server started in port 8080")
 
