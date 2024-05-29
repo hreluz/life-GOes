@@ -4,3 +4,29 @@ create private certificate
 
 create public certificate
     openssl rsa -in app.rsa -pubout > app.rsa.pub 
+
+
+
+https://jwt.io/
+
+
+Routes
+================
+    Login and get token
+        http://localhost:8080/v1/login  - POST  
+
+
+    Create Person - requires token
+        http://localhost:8080/v1/persons/create
+
+    Get All Person
+        http://localhost:8080/v1/persons/get-all
+
+    Update Person
+        http://localhost:8080/v1/persons/update?id=1
+
+    Delete Person
+        http://localhost:8080/v1/persons/delete?id=1    
+
+    Get by id
+        http://localhost:8080/v1/persons/get-by-id?id=1

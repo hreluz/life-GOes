@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	err := authorization.LoadFiles("certificates/app.rsa", "certificates/app.rsa.pub ")
+	err := authorization.LoadFiles("certificates/app.rsa", "certificates/app.rsa.pub")
 
 	if err != nil {
 		log.Fatalf("certificates could not be loaded: %v", err)
