@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"strconv"
 
@@ -13,8 +14,9 @@ func main() {
 	e.Use(middleware.Recover())
 
 	e.GET("/", hello)
-	e.GET("/division", division)
+	e.GET("/division", division, middlewareLogDivision)
 	person := e.Group("/person")
+	person.Use(middlewareLogPerson)
 	person.POST("", create)
 	person.GET("/:id", get)
 	person.PUT("/:id", update)
@@ -56,4 +58,18 @@ func delete(c echo.Context) error {
 func get(c echo.Context) error {
 	id := c.Param("id")
 	return c.String(http.StatusOK, "query "+id)
+}
+
+func middlewareLogPerson(f echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		log.Println("Request done to person")
+		return f(c)
+	}
+}
+
+func middlewareLogDivision(f echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		log.Println("Request done to division")
+		return f(c)
+	}
 }
