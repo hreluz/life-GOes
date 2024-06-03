@@ -14,6 +14,12 @@ func main() {
 
 	e.GET("/", hello)
 	e.GET("/division", division)
+	person := e.Group("/person")
+	person.POST("", create)
+	person.GET("/:id", get)
+	person.PUT("/:id", update)
+	person.DELETE("/:id", delete)
+
 	e.Start(":8080")
 }
 
@@ -31,4 +37,23 @@ func division(c echo.Context) error {
 
 	r := 3000 / f
 	return c.String(http.StatusOK, strconv.Itoa(r))
+}
+
+func create(c echo.Context) error {
+	return c.String(http.StatusOK, "created")
+}
+
+func update(c echo.Context) error {
+	id := c.Param("id")
+	return c.String(http.StatusOK, "updated "+id)
+}
+
+func delete(c echo.Context) error {
+	id := c.Param("id")
+	return c.String(http.StatusOK, "deleted "+id)
+}
+
+func get(c echo.Context) error {
+	id := c.Param("id")
+	return c.String(http.StatusOK, "query "+id)
 }
