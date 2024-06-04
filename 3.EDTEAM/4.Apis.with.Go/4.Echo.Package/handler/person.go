@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/hreluz/echo-framework/model"
 	"github.com/labstack/echo/v4"
@@ -35,41 +36,32 @@ func (p *person) create(c echo.Context) error {
 	return c.JSON(http.StatusCreated, response)
 }
 
-// func (p *person) update(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method != http.MethodPut {
-// 		response := newResponse(Error, "Method not supported", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+func (p *person) update(c echo.Context) error {
+	ID, err := strconv.Atoi(c.Param("id"))
 
-// 	ID, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil {
+		response := newResponse(Error, "The id must be an integer", nil)
+		return c.JSON(http.StatusBadRequest, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "The id must be an integer", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+	data := model.Person{}
+	err = c.Bind(&data)
 
-// 	data := model.Person{}
-// 	err = json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		response := newResponse(Error, "The person sent is not valid", nil)
+		return c.JSON(http.StatusBadRequest, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "The person sent is not valid", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+	err = p.storage.Update(ID, &data)
 
-// 	err = p.storage.Update(ID, &data)
+	if err != nil {
+		response := newResponse(Error, "There was a problem updating", nil)
+		return c.JSON(http.StatusInternalServerError, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "There was a problem updating", nil)
-// 		responseJSON(w, http.StatusInternalServerError, response)
-// 		return
-// 	}
-
-// 	response := newResponse(Message, "Person was updated correctly", nil)
-// 	responseJSON(w, http.StatusOK, response)
-// }
+	response := newResponse(Message, "Person was updated correctly", nil)
+	return c.JSON(http.StatusOK, response)
+}
 
 // func (p *person) delete(w http.ResponseWriter, r *http.Request) {
 // 	if r.Method != http.MethodDelete {
@@ -132,21 +124,14 @@ func (p *person) create(c echo.Context) error {
 // 	responseJSON(w, http.StatusOK, response)
 // }
 
-// func (p *person) getAll(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method != http.MethodGet {
-// 		response := newResponse(Error, "Method not supported", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+func (p *person) getAll(c echo.Context) error {
+	data, err := p.storage.GetAll()
 
-// 	data, err := p.storage.GetAll()
+	if err != nil {
+		response := newResponse(Error, "There was a problem when getting people", nil)
+		return c.JSON(http.StatusInternalServerError, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "There was a problem when getting people", nil)
-// 		responseJSON(w, http.StatusInternalServerError, response)
-// 		return
-// 	}
-
-// 	response := newResponse(Message, "Ok", data)
-// 	responseJSON(w, http.StatusOK, response)
-// }
+	response := newResponse(Message, "Ok", data)
+	return c.JSON(http.StatusOK, response)
+}
