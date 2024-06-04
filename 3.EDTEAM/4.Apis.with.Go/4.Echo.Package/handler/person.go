@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -63,66 +64,50 @@ func (p *person) update(c echo.Context) error {
 	return c.JSON(http.StatusOK, response)
 }
 
-// func (p *person) delete(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method != http.MethodDelete {
-// 		response := newResponse(Error, "Method not supported", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+func (p *person) delete(c echo.Context) error {
 
-// 	ID, err := strconv.Atoi(r.URL.Query().Get("id"))
+	ID, err := strconv.Atoi(c.Param("id"))
 
-// 	if err != nil {
-// 		response := newResponse(Error, "The id must be an integer", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+	if err != nil {
+		response := newResponse(Error, "The id must be an integer", nil)
+		return c.JSON(http.StatusBadRequest, response)
+	}
 
-// 	err = p.storage.Delete(ID)
+	err = p.storage.Delete(ID)
 
-// 	if errors.Is(err, model.ErrIDPersonDoesNotExist) {
-// 		response := newResponse(Error, "The id of the person does not exist", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+	if errors.Is(err, model.ErrIDPersonDoesNotExist) {
+		response := newResponse(Error, "The id of the person does not exist", nil)
+		return c.JSON(http.StatusBadRequest, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "There was an error deleting the person", nil)
-// 		responseJSON(w, http.StatusInternalServerError, response)
-// 		return
-// 	}
+	if err != nil {
+		response := newResponse(Error, "There was an error deleting the person", nil)
+		return c.JSON(http.StatusInternalServerError, response)
+	}
 
-// 	response := newResponse(Message, "It was deleted successfuly", nil)
-// 	responseJSON(w, http.StatusOK, response)
+	response := newResponse(Message, "It was deleted successfuly", nil)
+	return c.JSON(http.StatusOK, response)
 
-// }
+}
 
-// func (p *person) getById(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method != http.MethodGet {
-// 		response := newResponse(Error, "Method not supported", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+func (p *person) getById(c echo.Context) error {
+	ID, err := strconv.Atoi(c.Param("id"))
 
-// 	ID, err := strconv.Atoi(r.URL.Query().Get("id"))
+	if err != nil {
+		response := newResponse(Error, "The id must be an integer", nil)
+		return c.JSON(http.StatusBadRequest, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "The id must be an integer", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+	person, err := p.storage.GetById(ID)
 
-// 	person, err := p.storage.GetById(ID)
+	if err != nil {
+		response := newResponse(Error, "Person not found", nil)
+		return c.JSON(http.StatusNotFound, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "Person not found", nil)
-// 		responseJSON(w, http.StatusNotFound, response)
-// 		return
-// 	}
-
-// 	response := newResponse(Message, "Ok", person)
-// 	responseJSON(w, http.StatusOK, response)
-// }
+	response := newResponse(Message, "Ok", person)
+	return c.JSON(http.StatusOK, response)
+}
 
 func (p *person) getAll(c echo.Context) error {
 	data, err := p.storage.GetAll()

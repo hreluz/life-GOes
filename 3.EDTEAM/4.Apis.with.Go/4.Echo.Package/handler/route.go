@@ -1,7 +1,6 @@
 package handler
 
 import (
-	// "net/http"
 	"github.com/hreluz/echo-framework/middleware"
 	"github.com/labstack/echo/v4"
 )
@@ -14,11 +13,8 @@ func RoutePerson(e *echo.Echo, storage Storage) {
 	person.POST("", h.create)
 	person.PUT("/:id", h.update)
 	person.GET("", h.getAll)
-
-	// mux.HandleFunc("/v1/persons/get-all", middleware.Log(h.getAll))
-	// mux.HandleFunc("/v1/persons/update", h.update)
-	// mux.HandleFunc("/v1/persons/delete", middleware.Log(h.delete))
-	// mux.HandleFunc("/v1/persons/get-by-id", h.getById)
+	person.DELETE("/:id", h.delete)
+	person.GET("/:id", h.getById)
 }
 
 func RouteLogin(e *echo.Echo, storage Storage) {

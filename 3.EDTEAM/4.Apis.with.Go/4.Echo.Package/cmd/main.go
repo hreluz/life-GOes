@@ -5,6 +5,7 @@ import (
 	// "net/http"
 
 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
 
 	"github.com/hreluz/echo-framework/authorization"
 	"github.com/hreluz/echo-framework/handler"
@@ -21,6 +22,9 @@ func main() {
 	store := storage.NewMemory()
 
 	e := echo.New()
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+
 	handler.RoutePerson(e, &store)
 	handler.RouteLogin(e, &store)
 
