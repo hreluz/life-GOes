@@ -1,47 +1,25 @@
 package middleware
 
 import (
-	"fmt"
-	"log"
 	"net/http"
-	"time"
 
 	"github.com/hreluz/echo-framework/authorization"
+	"github.com/labstack/echo/v4"
 )
 
-func Log(f func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		t1 := time.Now()
-		log.Printf("request %q, method: %q\n", r.URL.Path, r.Method)
-		f(w, r)
-		t2 := time.Now()
-
-		fmt.Printf("the request took: %fs\n", t2.Sub(t1).Seconds())
-	}
-}
-
-func Authentication(f func(http.ResponseWriter, *http.Request)) func(http.ResponseWriter, *http.Request) {
-	return func(w http.ResponseWriter, r *http.Request) {
-		token := r.Header.Get("Authorization")
+func Authentication(f echo.HandlerFunc) echo.HandlerFunc {
+	return func(c echo.Context) error {
+		token := c.Request().Header.Get("Authorization")
 		_, err := authorization.ValidateToken(token)
 
 		if err != nil {
-			forbidden(w, r)
-			return
+			return forbidden(c)
 		}
 
-		// if token != "a-safe-token" {
-		// 	forbidden(w, r)
-		// 	return
-		// }
-
-		f(w, r)
+		return f(c)
 	}
 }
 
-func forbidden(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusForbidden)
-	w.Write([]byte("You are not allowed"))
-
+func forbidden(c echo.Context) error {
+	return c.JSON(http.StatusForbidden, map[string]string{"error": "You are not allowed"})
 }

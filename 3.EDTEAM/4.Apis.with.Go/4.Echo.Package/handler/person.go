@@ -1,12 +1,10 @@
 package handler
 
 import (
-// "encoding/json"
-// "errors"
-// "net/http"
-// "strconv"
+	"net/http"
 
-// "github.com/hreluz/echo-framework/model"
+	"github.com/hreluz/echo-framework/model"
+	"github.com/labstack/echo/v4"
 )
 
 type person struct {
@@ -17,33 +15,25 @@ func newPerson(storage Storage) person {
 	return person{storage}
 }
 
-// func (p *person) create(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method != http.MethodPost {
-// 		response := newResponse(Error, "Method not supported", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+func (p *person) create(c echo.Context) error {
+	data := model.Person{}
+	err := c.Bind(&data)
 
-// 	data := model.Person{}
-// 	err := json.NewDecoder(r.Body).Decode(&data)
+	if err != nil {
+		response := newResponse(Error, "The person sent is not valid", nil)
+		return c.JSON(http.StatusInternalServerError, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "The person sent is not valid", nil)
-// 		responseJSON(w, http.StatusBadRequest, response)
-// 		return
-// 	}
+	err = p.storage.Create(&data)
 
-// 	err = p.storage.Create(&data)
+	if err != nil {
+		response := newResponse(Error, "There was a problem creating the person", nil)
+		return c.JSON(http.StatusInternalServerError, response)
+	}
 
-// 	if err != nil {
-// 		response := newResponse(Error, "There was a problem creating the person", nil)
-// 		responseJSON(w, http.StatusInternalServerError, response)
-// 		return
-// 	}
-
-// 	response := newResponse(Message, "Person was created successfully", nil)
-// 	responseJSON(w, http.StatusCreated, response)
-// }
+	response := newResponse(Message, "Person was created successfully", nil)
+	return c.JSON(http.StatusCreated, response)
+}
 
 // func (p *person) update(w http.ResponseWriter, r *http.Request) {
 // 	if r.Method != http.MethodPut {

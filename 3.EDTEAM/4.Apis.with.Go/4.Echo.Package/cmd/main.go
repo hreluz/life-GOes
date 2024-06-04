@@ -21,7 +21,7 @@ func main() {
 	store := storage.NewMemory()
 
 	e := echo.New()
-	// handler.RoutePerson(e, &store)
+	handler.RoutePerson(e, &store)
 	handler.RouteLogin(e, &store)
 
 	log.Println("Server started in port 8080")
