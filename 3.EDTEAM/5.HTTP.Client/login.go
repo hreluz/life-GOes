@@ -21,7 +21,7 @@ func loginClient(url, email, password string) LoginResponse {
 		log.Fatalf("Error on login client fn: %v", err)
 	}
 
-	resp := httpClient(http.MethodPost, url, data)
+	resp := httpClient(http.MethodPost, url, "", data)
 
 	defer resp.Body.Close()
 
