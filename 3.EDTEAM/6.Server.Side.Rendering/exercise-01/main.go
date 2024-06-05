@@ -11,7 +11,7 @@ func main() {
 	t, err := template.New("exercise_1").Parse(tpl01)
 
 	if err != nil {
-		log.Fatalf("Error when doing parse on template %v", err)
+		log.Fatalf("Error when parsing template %v", err)
 	}
 
 	err = t.Execute(os.Stdout, nil)
