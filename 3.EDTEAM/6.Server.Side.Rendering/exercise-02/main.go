@@ -14,7 +14,7 @@ type person struct {
 func main() {
 	tpl02 := `Hello {{ .Name }}, you are {{ .Age }} years
 `
-	t, err := template.New("exercise_1").Parse(tpl02)
+	t, err := template.New("exercise_2").Parse(tpl02)
 
 	if err != nil {
 		log.Fatalf("Error when parsing template %v", err)
