@@ -12,7 +12,8 @@ type person struct {
 }
 
 func main() {
-	t, err := template.New("").ParseFiles("./invitation.tpl", "./confirmation.tpl")
+	// t, err := template.New("").ParseFiles("./invitation.tpl", "./confirmation.tpl")
+	t, err := template.New("").ParseGlob("./*.tpl")
 
 	if err != nil {
 		log.Fatalf("Error when parsing template %v", err)
