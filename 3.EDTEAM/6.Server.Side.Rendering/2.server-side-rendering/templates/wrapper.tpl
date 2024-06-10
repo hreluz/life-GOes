@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/style.css"/>
     <title>Document</title>
 </head>
+<body>
 {{ if eq .InternalTemplate "grid" }}
     {{ template "grid" . }}
 {{ else if eq .InternalTemplate "course" }}
@@ -14,5 +15,6 @@
 {{ else }}
     <h2>Page not found </h2>
 {{ end }}
+</body>
 </html>
 {{ end }}
