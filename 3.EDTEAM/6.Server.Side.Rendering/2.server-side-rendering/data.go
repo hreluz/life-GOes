@@ -31,20 +31,20 @@ type gridPage struct {
 
 type coursePage struct {
 	InternalTemplate string
-	Courses          course
+	Course           course
 }
 
 func loadGrid() []course {
 	return []course{
 		{
 			Slug:         "go",
-			Img:          "data/go.png",
+			Img:          "/data/go.png",
 			Title:        "Go from scratch",
 			Name:         "Go from scratch",
 			Description:  "Start learning Go from scratch to start programming",
 			Average:      4.7,
 			Professor:    "Professor Frink",
-			ProfessorImg: "data/professor_frink.png",
+			ProfessorImg: "/data/professor_frink.png",
 			Price:        30,
 			Modules: []module{
 				{
@@ -79,35 +79,35 @@ func loadGrid() []course {
 		},
 		{
 			Slug:         "go-poo",
-			Img:          "data/go_poo.jpg",
+			Img:          "/data/go_poo.jpg",
 			Title:        "POO with Go",
 			Name:         "POO with Go",
 			Description:  "Learning POO with Go Learning POO with Go Learning POO with Go",
 			Average:      4.8,
 			Professor:    "Comic Guy",
-			ProfessorImg: "data/comic_guy.png",
+			ProfessorImg: "/data/comic_guy.png",
 			Price:        30,
 		},
 		{
 			Slug:         "go-database",
-			Img:          "data/go_db.jpg",
+			Img:          "/data/go_db.jpg",
 			Title:        "Databases with Go",
 			Name:         "Databases with Go",
 			Description:  " Learn database integration with Go Learn database integration with Go",
 			Average:      4.8,
 			Professor:    "Professor Skinner",
-			ProfessorImg: "data/professor_skinner.png",
+			ProfessorImg: "/data/professor_skinner.png",
 			Price:        30,
 		},
 		{
 			Slug:         "go-testing",
-			Img:          "data/go_testing.png",
+			Img:          "/data/go_testing.png",
 			Title:        "Testing with Go",
 			Name:         "Testing with Go",
 			Description:  "Learning to create tests on your Go projects",
 			Average:      4.7,
 			Professor:    "Comic Guy",
-			ProfessorImg: "data/comic_guy.png",
+			ProfessorImg: "/data/comic_guy.png",
 			Price:        24,
 		},
 	}

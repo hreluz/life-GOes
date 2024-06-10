@@ -28,6 +28,7 @@ func main() {
 	http.Handle("/data/", http.StripPrefix("/data/", http.FileServer(http.Dir("public/data"))))
 
 	http.HandleFunc("/", index)
+	http.HandleFunc("/courses/", courses)
 
 	err = http.ListenAndServe(":8080", nil)
 
@@ -39,6 +40,16 @@ func main() {
 func index(w http.ResponseWriter, r *http.Request) {
 	gp := gridPage{"grid", loadGrid()}
 	err := t.ExecuteTemplate(w, "wrapper", gp)
+
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+	}
+}
+
+func courses(w http.ResponseWriter, r *http.Request) {
+	slug := r.URL.Path[len("/courses/"):]
+	cp := coursePage{"course", getCourse(slug)}
+	err := t.ExecuteTemplate(w, "wrapper", &cp)
 
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -8,14 +8,14 @@
       class="course-card s-radius-1 s-shadow-bottom background s-shadow-card-micro s-transition white-color nowrap s-column s-mb-0">
       <div class="s-column flex-grow ">
         <div class="img-container s-ratio-16-9 s-radius-tl-1 s-radius-tr-1">
-          <a href="/cursos/{{ $course.Slug }}">
+          <a href="/courses/{{ $course.Slug }}">
             <img class="img-course-card s-transition" alt="{{ $course.Title }}"
               src="{{ $course.Img }}">
           </a>
         </div>
         <div title="{{ $course.Title }}" class="course-progress s-mt-05"></div>
         <div class="s-pxy-2 s-column flex-grow">
-          <a href="/cursos/{{ $course.Slug }}">
+          <a href="/courses/{{ $course.Slug }}">
             <h3 class="s-mb-1 t4">
               <span class="s-color-grey-700">{{ $course.Name }}</span>
             </h3>
