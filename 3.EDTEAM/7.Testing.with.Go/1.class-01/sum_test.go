@@ -20,8 +20,7 @@ func TestAddMultiple(t *testing.T) {
 	got := AddMultiple(2, 3, 1)
 
 	if got != want {
-		t.Logf("Error: It was expected %d, got %d", want, got)
-		t.Fail()
+		t.Errorf("Error: It was expected %d, got %d", want, got)
 	}
 }
 
