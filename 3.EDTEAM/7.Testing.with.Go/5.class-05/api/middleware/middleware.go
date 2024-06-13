@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/hreluz/go-testing-class-5/authorization"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // Authentication .

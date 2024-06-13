@@ -20,7 +20,7 @@ func (sme *StorageMockError) Delete(ID int) error {
 	return errors.New("mock error")
 }
 
-func (sme *StorageMockError) GetById(ID int) (model.Person, error) {
+func (sme *StorageMockError) GetByID(ID int) (model.Person, error) {
 	return model.Person{}, errors.New("mock error")
 }
 
@@ -42,7 +42,7 @@ func (sme *StorageMockOk) Delete(ID int) error {
 	return nil
 }
 
-func (sme *StorageMockOk) GetById(ID int) (model.Person, error) {
+func (sme *StorageMockOk) GetByID(ID int) (model.Person, error) {
 	return model.Person{}, nil
 }
 

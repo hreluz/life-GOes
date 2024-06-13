@@ -6,7 +6,7 @@ import (
 	"strconv"
 
 	"github.com/hreluz/go-testing-class-5/model"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 type person struct {

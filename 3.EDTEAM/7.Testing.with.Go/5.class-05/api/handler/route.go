@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/hreluz/go-testing-class-5/middleware"
-	"github.com/labstack/echo"
+	"github.com/labstack/echo/v4"
 )
 
 // RoutePerson .
