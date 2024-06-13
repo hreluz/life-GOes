@@ -31,7 +31,7 @@ func (p *person) create(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, response)
 	}
 
-	response := newResponse(Message, "Person creating successfully", nil)
+	response := newResponse(Message, "Person was created successfully", nil)
 	return c.JSON(http.StatusCreated, response)
 }
 

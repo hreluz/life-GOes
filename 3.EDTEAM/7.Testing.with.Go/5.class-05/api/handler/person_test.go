@@ -45,3 +45,70 @@ func TestPerson_Create_wrong_structure(t *testing.T) {
 	}
 
 }
+
+func TestPerson_Create_wrong_storage(t *testing.T) {
+	data := []byte(`{"name": "Batman", "age":18 }`)
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(data))
+
+	r.Header.Set("Content-Type", "application/json")
+	e := echo.New()
+	ctx := e.NewContext(r, w)
+
+	p := newPerson(&StorageMockError{})
+	err := p.create(ctx)
+
+	if err != nil {
+		t.Errorf("it was not expected error, but it got %v", err)
+	}
+
+	if w.Code != http.StatusInternalServerError {
+		t.Errorf("Status code, it was expected %d, it got %d", http.StatusInternalServerError, w.Code)
+	}
+
+	resp := response{}
+	err = json.NewDecoder(w.Body).Decode(&resp)
+
+	if err != nil {
+		t.Errorf("It could unmarshal the body: %v", err)
+	}
+
+	expectedMessage := "There was a problem creating the person"
+	if resp.Message != expectedMessage {
+		t.Errorf("The message was not the expected, it got %q, it was expected %q", expectedMessage, resp.Message)
+	}
+}
+
+func TestPerson_Create(t *testing.T) {
+	data := []byte(`{"name": "Batman", "age":18 }`)
+	w := httptest.NewRecorder()
+	r := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(data))
+
+	r.Header.Set("Content-Type", "application/json")
+	e := echo.New()
+	ctx := e.NewContext(r, w)
+
+	p := newPerson(&StorageMockOk{})
+	err := p.create(ctx)
+
+	if err != nil {
+		t.Errorf("it was not expected error, but it got %v", err)
+	}
+
+	if w.Code != http.StatusCreated {
+		t.Errorf("Status code, it was expected %d, it got %d", http.StatusInternalServerError, w.Code)
+	}
+
+	resp := response{}
+	err = json.NewDecoder(w.Body).Decode(&resp)
+
+	if err != nil {
+		t.Errorf("It could unmarshal the body: %v", err)
+	}
+
+	expectedMessage := "Person was created successfully"
+	if resp.Message != expectedMessage {
+		t.Errorf("The message was not the expected, it got %q, it was expected %q", expectedMessage, resp.Message)
+	}
+
+}
