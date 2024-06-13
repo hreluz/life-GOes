@@ -21,17 +21,17 @@ func (p *person) create(c echo.Context) error {
 	data := model.Person{}
 	err := c.Bind(&data)
 	if err != nil {
-		response := newResponse(Error, "La persona no tiene una estructura correcta", nil)
+		response := newResponse(Error, "Person does not have the correct structure", nil)
 		return c.JSON(http.StatusBadRequest, response)
 	}
 
 	err = p.storage.Create(&data)
 	if err != nil {
-		response := newResponse(Error, "Hubo un problema al crear la persona", nil)
+		response := newResponse(Error, "There was a problem creating the person", nil)
 		return c.JSON(http.StatusInternalServerError, response)
 	}
 
-	response := newResponse(Message, "Persona creada correctamente", nil)
+	response := newResponse(Message, "Person creating successfully", nil)
 	return c.JSON(http.StatusCreated, response)
 }
 

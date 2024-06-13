@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -29,4 +30,18 @@ func TestPerson_Create_wrong_structure(t *testing.T) {
 	if w.Code != http.StatusBadRequest {
 		t.Errorf("Status code, it was expected %d, it got %d", http.StatusBadRequest, w.Code)
 	}
+
+	// t.Logf("Body %v", w.Body.String())
+	resp := response{}
+	err = json.NewDecoder(w.Body).Decode(&resp)
+
+	if err != nil {
+		t.Errorf("It could unmarshal the body: %v", err)
+	}
+
+	expectedMessage := "Person does not have the correct structure"
+	if resp.Message != expectedMessage {
+		t.Errorf("The message was not the expected, it got %q, it was expected %q", expectedMessage, resp.Message)
+	}
+
 }
