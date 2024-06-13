@@ -1,0 +1,14 @@
+
+# Postgres Database with docker
+#   docker run -d  -v edteampggoTEST:/var/lib/postgresql/data --rm -p 5433:5432 -e POSTGRES_USER=pguser -e POSTGRES_PASSWORD=pgpasswd -e POSTGRES_DB=pgdb postgres  
+#   docker exec -it some-rabbti bash
+#   psql -U pguser -d pgdb
+
+# --- POSTGRESQL ---
+# show tables -> \d
+# describe table -> \d products
+# show databases -> \l
+# switch to a db ->  \c pgdb
+
+
+CREATE TABLE IF NOT EXISTS persons( name  VARCHAR (255) NOT NULL,age INT NOT NULL);

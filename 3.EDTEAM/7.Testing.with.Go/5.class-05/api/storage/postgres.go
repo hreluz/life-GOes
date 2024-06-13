@@ -24,13 +24,13 @@ func NewPsql() Psql {
 }
 
 func getPSQLConn() *sql.DB {
-	db, err := sql.Open("postgres", "postgres://postgres:postgres@localhost/edteam?sslmode=disable")
+	db, err := sql.Open("postgres", "postgres://pguser:pgpasswd@localhost:5433/pgdb?sslmode=disable")
 	if err != nil {
-		log.Fatalf("no se pudo conectar a la bd: %v", err)
+		log.Fatalf("it could not connect to db: %v", err)
 	}
 
 	if err = db.Ping(); err != nil {
-		log.Fatalf("no se pudo hacer ping a la bd: %v", err)
+		log.Fatalf("it could not ping the db: %v", err)
 	}
 
 	return db
@@ -44,13 +44,13 @@ func (psql *Psql) Create(person *model.Person) error {
 
 	stmt, err := psql.db.Prepare(`INSERT INTO persons VALUES ($1, $2)`)
 	if err != nil {
-		log.Fatalf("no se pudo preparar la consulta: %v", err)
+		log.Fatalf("query could not be done: %v", err)
 	}
 	defer stmt.Close()
 
 	_, err = stmt.Exec(person.Name, person.Age)
 	if err != nil {
-		log.Fatalf("no se pudo insertar el registro: %v", err)
+		log.Fatalf("query could not be inserted: %v", err)
 	}
 
 	return nil
