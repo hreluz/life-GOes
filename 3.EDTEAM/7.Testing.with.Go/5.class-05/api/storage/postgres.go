@@ -6,9 +6,8 @@ import (
 	"log"
 
 	// Import pq library
+	"github.com/hreluz/go-testing-class-5/model"
 	_ "github.com/lib/pq"
-
-	"github.com/EDteam/golang-testing/clase5/api/model"
 )
 
 // Psql .

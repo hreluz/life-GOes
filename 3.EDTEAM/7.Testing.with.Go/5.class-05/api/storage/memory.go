@@ -3,7 +3,7 @@ package storage
 import (
 	"fmt"
 
-	"github.com/EDteam/golang-testing/clase5/api/model"
+	"github.com/hreluz/go-testing-class-5/model"
 )
 
 // Memory .
