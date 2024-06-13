@@ -12,6 +12,10 @@ import (
 )
 
 func TestPerson_Create_integration(t *testing.T) {
+	t.Cleanup(func() {
+		cleanData(t)
+	})
+
 	data := []byte(`{"name": "Batman", "age":18 }`)
 	w := httptest.NewRecorder()
 	r := httptest.NewRequest(http.MethodPost, "/", bytes.NewBuffer(data))
@@ -44,4 +48,16 @@ func TestPerson_Create_integration(t *testing.T) {
 		t.Errorf("The message was not the expected, it got %q, it was expected %q", expectedMessage, resp.Message)
 	}
 
+	cleanData(t)
+}
+
+func cleanData(t *testing.T) {
+	store := storage.NewPsql()
+	defer store.CloseDB()
+
+	err := store.DeleteAll()
+
+	if err != nil {
+		t.Fatalf("Table could not be truncated: %v", err)
+	}
 }
