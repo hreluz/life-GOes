@@ -6,6 +6,35 @@ import (
 	"github.com/hreluz/go-testing-class-5/model"
 )
 
+func TestCreate(t *testing.T) {
+	table := []struct {
+		name          string
+		person        *model.Person
+		expectedError error
+	}{
+		{"Empty person", nil, model.ErrPersonCanNotBeNil},
+		{"Real Person", &model.Person{Name: "Batman"}, nil},
+		{"Real Person", &model.Person{Name: "Superman"}, nil},
+	}
+
+	m := NewMemory()
+
+	for _, v := range table {
+		t.Run(v.name, func(t *testing.T) {
+			gotErr := m.Create(v.person)
+			if gotErr != v.expectedError {
+				t.Errorf("It was expected the error %v, it got %v", v.expectedError, gotErr)
+			}
+		})
+	}
+
+	expectedCount := len(table) - 1
+
+	if m.currentID != expectedCount {
+		t.Errorf("It was expected %d, it got %d", expectedCount, m.currentID)
+	}
+}
+
 func TestCreate_empty_person(t *testing.T) {
 	m := NewMemory()
 
