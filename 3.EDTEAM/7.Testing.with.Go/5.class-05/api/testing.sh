@@ -1,6 +1,6 @@
 #!/bin/sh
 
 for d in $(go list ./...); do
-	echo "Testeando el paquete $d"
+	echo "Testing package $d"
 	go test -v $d
 done

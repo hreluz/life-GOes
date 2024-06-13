@@ -1,3 +1,13 @@
+# Run all tests 
+
+go test ./...
+
+# list folders with go packages
+go list ./...
+
+# Run custom test
+./testing.sh
+
 
 # Postgres Database with docker
 #   docker run -d  -v edteampggoTEST:/var/lib/postgresql/data --rm -p 5433:5432 -e POSTGRES_USER=pguser -e POSTGRES_PASSWORD=pgpasswd -e POSTGRES_DB=pgdb postgres  
