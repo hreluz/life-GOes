@@ -3,10 +3,9 @@ package handler
 import (
 	"net/http"
 
+	"github.com/hreluz/go-testing-class-5/authorization"
+	"github.com/hreluz/go-testing-class-5/model"
 	"github.com/labstack/echo"
-
-	"github.com/EDteam/golang-testing/clase5/api/authorization"
-	"github.com/EDteam/golang-testing/clase5/api/model"
 )
 
 type login struct {

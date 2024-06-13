@@ -4,8 +4,8 @@ import (
 	"errors"
 	"time"
 
-	"github.com/EDteam/golang-testing/clase5/api/model"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/hreluz/go-testing-class-5/model"
 )
 
 // GenerateToken .

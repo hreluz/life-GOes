@@ -1,6 +1,6 @@
 package handler
 
-import "github.com/EDteam/golang-testing/clase5/api/model"
+import "github.com/hreluz/go-testing-class-5/model"
 
 // Storage .
 type Storage interface {

@@ -3,12 +3,11 @@ package main
 import (
 	"log"
 
+	"github.com/hreluz/go-testing-class-5/authorization"
+	"github.com/hreluz/go-testing-class-5/handler"
+	"github.com/hreluz/go-testing-class-5/storage"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
-
-	"github.com/EDteam/golang-api/clase-7/authorization"
-	"github.com/EDteam/golang-api/clase-7/handler"
-	"github.com/EDteam/golang-api/clase-7/storage"
 )
 
 func main() {
