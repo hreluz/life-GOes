@@ -8,6 +8,15 @@ go list ./...
 # Run custom test
 ./testing.sh
 
+#Coverage on a folder
+cd handler
+go test -coverprofile=profile.out
+cat profile.out
+
+# See info
+go tool cover -func=profile.out
+go tool cover -html=profile.out
+
 
 # Postgres Database with docker
 #   docker run -d  -v edteampggoTEST:/var/lib/postgresql/data --rm -p 5433:5432 -e POSTGRES_USER=pguser -e POSTGRES_PASSWORD=pgpasswd -e POSTGRES_DB=pgdb postgres  
