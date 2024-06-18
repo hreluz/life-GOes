@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"sync"
+	"time"
 )
 
 // run server in this directory
@@ -12,12 +13,16 @@ import (
 var urls = []string{
 	"http://localhost:1234?duration=3",
 	"http://localhost:1234?duration=1",
+	"http://localhost:1234?duration=10",
 	"http://localhost:1234?duration=5",
+	"http://localhost:1234?duration=2",
+	"http://localhost:1234?duration=2",
 }
 
 func main() {
-	fetchConcurrent(urls)
-	fetchConcurrentSCP(urls)
+	// fetchConcurrent(urls)
+	// fetchConcurrentSCP(urls)
+	fetchConcurrentCancelation(urls)
 }
 
 func fetchSequential(urls []string) {
@@ -53,6 +58,26 @@ func fetchConcurrentSCP(urls []string) {
 	<-signal
 	<-signal
 	<-signal
+}
+
+func fetchConcurrentCancelation(urls []string) {
+	done := make(chan struct{})
+
+	for _, url := range urls {
+		go func(u string) {
+			fetch(u, "cancellation")
+
+			select {
+			case <-done:
+				return
+			}
+		}(url)
+	}
+
+	select {
+	case <-time.After(time.Second * 4):
+		close(done)
+	}
 }
 
 func fetch(url, typeFetch string) {
