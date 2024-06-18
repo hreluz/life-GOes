@@ -6,6 +6,10 @@ import (
 )
 
 func main() {
+	hub := newHub()
+
+	go hub.run()
+
 	serveMux := http.NewServeMux()
 
 	// web page
@@ -13,7 +17,7 @@ func main() {
 
 	// server websocket
 	serveMux.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-
+		handleWS(hub, w, r)
 	})
 
 	log.Println("running server :8080")

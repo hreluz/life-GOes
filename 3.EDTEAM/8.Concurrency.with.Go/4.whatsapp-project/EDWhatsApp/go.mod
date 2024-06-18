@@ -1,3 +1,3 @@
-module github.com/AJRDRGZ/EDWhatsApp
+module github.com/hreluz/EDWhatsApp
 
 go 1.15
