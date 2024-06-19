@@ -3,8 +3,16 @@ package main
 import (
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/gorilla/websocket"
+)
+
+const (
+	maxMessageSize = 512
+
+	// Time allowed to write a message
+	writeWait = 10 * time.Second
 )
 
 var upgrader = websocket.Upgrader{
@@ -25,10 +33,47 @@ type Client struct {
 }
 
 func (c *Client) writeWS() {
+	defer func() {
+		c.conn.Close()
+	}()
+
+	for {
+		select {
+		case message, isOpen := <-c.queueMessage:
+			if !isOpen {
+				// returns because the channel was closed by the hub
+				return
+			}
+
+			c.conn.SetWriteDeadline(time.Now().Add(writeWait))
+			if err := c.conn.WriteJSON(message); err != nil {
+				log.Println("can't write the message into ws: ", err)
+				return
+			}
+
+		}
+	}
 
 }
 func (c *Client) readWS() {
+	defer func() {
+		c.hub.unregister <- c
+		c.conn.Close()
+	}()
 
+	c.conn.SetReadLimit(maxMessageSize)
+
+	for {
+		message := Message{}
+		if err := c.conn.ReadJSON(&message); err != nil {
+			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
+				log.Println("can't read the message: ", err)
+			}
+			return
+		}
+
+		c.hub.broadcast <- message
+	}
 }
 
 func handleWS(hub *Hub, w http.ResponseWriter, r *http.Request) {
